@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import zoo.Cuidados;
@@ -39,53 +37,48 @@ public class GestionFicheros implements Serializable{
     
     
     
-    //abrir escribir 
+    //abrir Guardar los datos 
     public void saveCare(Datos datosgeneral, Cuidados cuidado, String nombreFich) throws IOException {
-        Datos dato = new Datos(datosgeneral);
-        System.out.println(dato + " \n Antes de guardar");
-        dato.setCuidados(cuidado);
-        System.out.println(dato + " \n Listo para guardar");
+        Datos dato = new Datos(datosgeneral); // Se hace una copia de los datos que hay actualmente en el fichero 
+        dato.setCuidados(cuidado); // se le añaden los nuevos cuidados
         
-        fileOut = new FileOutputStream("datos/".concat(nombreFich));
-        output = new ObjectOutputStream(fileOut);
+        fileOut = new FileOutputStream("datos/".concat(nombreFich)); // Se dice donde se van a guardar los datos
+        output = new ObjectOutputStream(fileOut); // Se selecciona
 
-        output.writeObject(dato);
-        System.out.println(dato.getCuidados().toString() +"Escritos" );
-        
-        
-        output.close();
+        output.writeObject(dato); // Se escriben los datos
+        output.close(); // Se cierra la conexion con el fichero
     }
+    
+    // Carga los datos que hay en el fichero
     public static Datos loadCuidados(String nombreFich){
-        Datos datos = new Datos();
+        Datos datos = new Datos(); // se crea la variable para guardar los datos
         try {
             
-            File fichero = new File ("datos/".concat(nombreFich));
-            if(fichero.exists()){ 
-                fileInput = new FileInputStream("datos/".concat(nombreFich));
-                input = new ObjectInputStream(fileInput);
-                 datos = new Datos ((Datos)input.readObject());
+            File fichero = new File ("datos/".concat(nombreFich)); // se elige el fichero
+            if(fichero.exists()){ // Si el fichero esta creado
+                fileInput = new FileInputStream("datos/".concat(nombreFich)); // Selecciono el archivo del que quiero extraer datos
+                input = new ObjectInputStream(fileInput); // Los extraigo
+                 datos = new Datos ((Datos)input.readObject()); // Clono el objeto almacenado al objeto anterior (esta parte puede sobrar)
                 
-                input.close();
-                fileInput.close();
-                System.out.println(datos.toString() + "Load");
+                input.close(); // Cierro la conexion con el archivo
+                fileInput.close(); // X2
             }
-            //System.out.println(a.getCuidados());
-            return datos;
+            return datos; // Se devuelve el objeto vacio 
             
         } catch (EOFException eof) {
-            return datos;
+            return datos; // Se devuelve el objeto vacio 
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GestionFicheros.class.getName()).log(Level.SEVERE, null, ex);
-            return datos;
+            return datos; // Se devuelve el objeto vacio 
 
         } catch (IOException ex) {
             Logger.getLogger(GestionFicheros.class.getName()).log(Level.SEVERE, null, ex);
-            return datos;
+            return datos; // Se devuelve el objeto vacio 
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionFicheros.class.getName()).log(Level.SEVERE, null, ex);
-            return datos;
+            return datos; // Se devuelve el objeto vacio 
 
         }
        

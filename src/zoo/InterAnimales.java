@@ -7,7 +7,6 @@ package zoo;
  */
 
 import herramientas.GestionFicheros;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -22,10 +21,7 @@ public class InterAnimales extends javax.swing.JFrame {
     public InterAnimales() {
         initComponents();
     }
-    
-    private static ArrayList cuidados = new ArrayList();
-    private static GestionFicheros cargarCuidados = new GestionFicheros();
-    
+
     private Datos dato;
 
     /**
