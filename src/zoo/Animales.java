@@ -10,14 +10,14 @@ package zoo;
  * @author laura
  */
 public class Animales{
-    private enum tipo {terrestre,aereo,marino};
+    //private enum tipo {terrestre,aereo,marino};
     
     private String especie;
     private String raza;
     private float peso;
     private int patas;
     private boolean activo;
-    private tipo area;
+    private String area;
     private Cuidados cuidado;
     private boolean peligroExtincion;
     
@@ -25,14 +25,14 @@ public class Animales{
     public Animales(){
     }
 
-    public Animales(String especie, String raza, float peso, int patas, boolean activo,tipo area,Cuidados cuidado, boolean peligroExtincion) {
+    public Animales(String especie, String raza, float peso, int patas, boolean activo,String area,String cuidado, boolean peligroExtincion) {
         this.especie = especie;
         this.raza = raza;
         this.peso = peso;
         this.patas = patas;
         this.activo = activo;
         this.area = area; 
-        this.cuidado = cuidado;
+        //this.cuidado = cuidado;
         this.peligroExtincion = peligroExtincion;
     }
 

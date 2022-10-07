@@ -24,8 +24,8 @@ public class InterAnimales extends javax.swing.JFrame {
 
     private Datos dato;
     
-    public void añadir(){
-        Animales animal = new Animales();
+    public void añadir(Cuidados cuidado, int cuidadoIndice, int tipoIndice){ // arreglar los conbobox
+        Animales animal = new Animales(especie.getText(), raza.getText(), (float)peso.getValue(), (int)patas.getValue(),activo.isSelected(),tipo.getItemAt(tipoIndice),this.cuidado.getItemAt(cuidadoIndice),peligoExtincion.isSelected());
     }
 
     /**
@@ -215,8 +215,8 @@ public class InterAnimales extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(patas, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(tipo)
+                    .addComponent(patas)
+                    .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cuidado))
                 .addGap(68, 68, 68)
                 .addGroup(fondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
