@@ -10,7 +10,7 @@ package zoo;
  * @author laura
  */
 public class Animales{
-    //private enum tipo {terrestre,aereo,marino};
+    private String[] tipo = new String [3];// "terrestre","aereo","marino"
     
     private String especie;
     private String raza;
@@ -25,13 +25,13 @@ public class Animales{
     public Animales(){
     }
 
-    public Animales(String especie, String raza, float peso, int patas, boolean activo,String area,String cuidado, boolean peligroExtincion) {
+    public Animales(String especie, String raza, float peso, int patas, boolean activo,String tipo,String cuidado, boolean peligroExtincion) {
         this.especie = especie;
         this.raza = raza;
         this.peso = peso;
         this.patas = patas;
         this.activo = activo;
-        this.area = area; 
+        this.tipo[1]= tipo; // Arreglar
         //this.cuidado = cuidado;
         this.peligroExtincion = peligroExtincion;
     }
