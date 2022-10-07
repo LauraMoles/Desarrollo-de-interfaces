@@ -238,9 +238,7 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
         try {
             añadir();
             JOptionPane.showMessageDialog(null,"Añadido cuidado: " + nombreCuidado.getText());
-            System.out.println(GestionFicheros.loadCuidados("cuidados.dat"));
             Datos datosGeneral= new Datos(GestionFicheros.loadCuidados("cuidados.dat"));
-            System.out.println(datosGeneral);
             gestionar.saveCare(datosGeneral,cuidadoGeneral, fichero);
             
         } catch (IOException ex) {
