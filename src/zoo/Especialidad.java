@@ -1,5 +1,7 @@
 package zoo;
 
+import java.io.Serializable;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -9,7 +11,7 @@ package zoo;
  *
  * @author laura
  */
-public class Especialidad {
+public class Especialidad implements Serializable{
     
     //Atributos
     private String especialidad;
@@ -55,6 +57,12 @@ public class Especialidad {
     public void setCantAnimales(int cantAnimales) {
         this.cantAnimales = cantAnimales;
     }
+
+    @Override
+    public String toString() {
+        return "Especialidad{" + "especialidad=" + especialidad + ", salarioMedio=" + salarioMedio + ", peligrosidad=" + peligrosidad + ", cantAnimales=" + cantAnimales + '}';
+    }
+    
     
     
 }

@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import zoo.Animales;
 import zoo.Cuidados;
 import zoo.Datos;
+import zoo.Especialidad;
 import zoo.InterAnimales;
 
 /**
@@ -56,17 +57,29 @@ public class GestionFicheros implements Serializable{
         dato.setAnimales(animal); // se le añaden los nuevos Animales
         
         FileOutputStream fileOut;
-        try {
-            fileOut = new FileOutputStream("datos/datos.dat"); // Se dice donde se van a guardar los datos
-            ObjectOutputStream output = new ObjectOutputStream(fileOut); // Se selecciona
-            output.writeObject(dato); // Se escriben los datos
-            output.close(); // Se cierra la conexion con el fichero
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(InterAnimales.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(InterAnimales.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        fileOut = new FileOutputStream("datos/datos.dat"); // Se dice donde se van a guardar los datos
+        ObjectOutputStream output = new ObjectOutputStream(fileOut); // Se selecciona
+        output.writeObject(dato); // Se escriben los datos
+        output.close(); // Se cierra la conexion con el fichero
+        
     }
+    public static void saveCare(Datos datosgeneral, Especialidad especialidad) throws IOException {
+        Datos dato = new Datos(datosgeneral); // Se hace una copia de los datos que hay actualmente en el fichero 
+        dato.setEspecialidades(especialidad); // se le añaden los nuevos Animales
+        
+        FileOutputStream fileOut;
+        fileOut = new FileOutputStream("datos/datos.dat"); // Se dice donde se van a guardar los datos
+        ObjectOutputStream output = new ObjectOutputStream(fileOut); // Se selecciona
+        output.writeObject(dato); // Se escriben los datos
+        output.close(); // Se cierra la conexion con el fichero
+        
+    }
+    
+    
+    
+    
+    
+    
     
     // Carga los datos que hay en el fichero
     public static Datos loadDatos(){
@@ -98,19 +111,26 @@ public class GestionFicheros implements Serializable{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionFicheros.class.getName()).log(Level.SEVERE, null, ex);
             return datos; // Se devuelve el objeto vacio 
-
         }
-       
     }
+    
+    
     public static Cuidados añadirCuidado(String pelaje, String comida, String habitat, float precioComida, float costeMedio, float cicloComida, String nombreCuidado){
         JOptionPane.showMessageDialog(null,"Añadido cuidado: " + nombreCuidado);
         return new Cuidados(pelaje, comida, habitat, precioComida, costeMedio, cicloComida,nombreCuidado);
 
     }
-    //peligoExtincion.isSelected()
+
     public static Animales añadirAnimal(String especie, String raza, float peso, int patas, boolean activo, String tipo, String nombreCuidado, boolean peligoExtincion){
         JOptionPane.showMessageDialog(null,"Añadido nuevo animal");
         return new Animales(especie, raza, peso, patas, activo, tipo,nombreCuidado,peligoExtincion);
+
+    }
+    
+    //. peligro, (int)cantidad.getValue()
+    public static Especialidad añadirEspecialidad(String nombre, float salario, int peligro, int cantidad){
+        JOptionPane.showMessageDialog(null,"Añadida la especialidad: " + nombre);
+        return new Especialidad(nombre, cantidad, peligro, cantidad);
 
     }
     

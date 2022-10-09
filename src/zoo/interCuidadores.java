@@ -34,8 +34,6 @@ public class interCuidadores extends javax.swing.JFrame {
         Nombre1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         Nombre2 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        Nombre3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
@@ -75,36 +73,26 @@ public class interCuidadores extends javax.swing.JFrame {
         Nombre2.setFont(new java.awt.Font("Javanese Text", 0, 18)); // NOI18N
         Nombre2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Nombre2.setText("Especialidad: ");
-        fondo.add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 140, 60));
-
-        jTextField3.setBackground(new java.awt.Color(240, 240, 240));
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        fondo.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 410, 60));
-
-        Nombre3.setBackground(new java.awt.Color(255, 255, 255));
-        Nombre3.setFont(new java.awt.Font("Javanese Text", 0, 18)); // NOI18N
-        Nombre3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Nombre3.setText("Nombre Cuidador: ");
-        fondo.add(Nombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 160, 60));
+        fondo.add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 140, 60));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        fondo.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 390, 410, 50));
+        fondo.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 410, 50));
 
         jButton1.setBackground(new java.awt.Color(102, 255, 204));
         jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Añadir");
-        fondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, 160, 50));
+        fondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 440, 160, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 659, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(fondo, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+            .addComponent(fondo, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -149,13 +137,11 @@ public class interCuidadores extends javax.swing.JFrame {
     private javax.swing.JLabel Nombre;
     private javax.swing.JLabel Nombre1;
     private javax.swing.JLabel Nombre2;
-    private javax.swing.JLabel Nombre3;
     private javax.swing.JLabel Titulo;
     private javax.swing.JPanel fondo;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
