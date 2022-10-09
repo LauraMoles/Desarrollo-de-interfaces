@@ -28,17 +28,14 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
         initComponents();
     }
     
-    private String fichero ="cuidados.dat";
     private Cuidados cuidadoGeneral;
-    private static File dir = new File ("datos/cuidados.dat");
+    private static File dir = new File ("datos/datos.dat");
     private Datos datos;
     private GestionFicheros gestionar = new GestionFicheros();
     
     
-    public void añadir(){
-        cuidadoGeneral = new Cuidados(pelaje.getText(), comida.getText(), habitat.getText(), Integer.parseInt(precioComida.getValue().toString()), Integer.parseInt(costeMedio.getValue().toString()), Integer.parseInt(cicloComida.getValue().toString()),nombreCuidado.getText());
-    }
-
+    //(pelaje.getText(), comida.getText(), habitat.getText(), (float)Integer.parseInt(precioComida.getValue().toString()), (float)Integer.parseInt(costeMedio.getValue().toString()), (float)Integer.parseInt(cicloComida.getValue().toString()),nombreCuidado.getText()
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -236,15 +233,12 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            añadir();
-            JOptionPane.showMessageDialog(null,"Añadido cuidado: " + nombreCuidado.getText());
-            Datos datosGeneral= new Datos(GestionFicheros.loadCuidados("cuidados.dat"));
-            gestionar.saveCare(datosGeneral,cuidadoGeneral, fichero);
-            
+            cuidadoGeneral=GestionFicheros.añadirCuidado(pelaje.getText(), comida.getText(), habitat.getText(), (float)Integer.parseInt(precioComida.getValue().toString()), (float)Integer.parseInt(costeMedio.getValue().toString()), (float)Integer.parseInt(cicloComida.getValue().toString()),nombreCuidado.getText());
+            Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
+            gestionar.saveCare(datosGeneral,cuidadoGeneral);
         } catch (IOException ex) {
             Logger.getLogger(InterCuidados.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -277,7 +271,7 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
         Datos datosGeneral = null;
         GestionFicheros cargarCuidados = new GestionFicheros();
         if (dir.exists()){
-            datosGeneral= new Datos(GestionFicheros.loadCuidados("cuidados.dat"));
+            datosGeneral= new Datos(GestionFicheros.loadDatos());
         }
         
         

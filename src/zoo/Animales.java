@@ -1,5 +1,9 @@
 package zoo;
 
+import herramientas.GestionFicheros;
+import java.io.Serializable;
+import java.util.Iterator;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -9,8 +13,8 @@ package zoo;
  *
  * @author laura
  */
-public class Animales{
-    private String[] tipo = new String [3];// "terrestre","aereo","marino"
+public class Animales implements Serializable{
+    private String tipo;// "terrestre","aereo","marino"
     
     private String especie;
     private String raza;
@@ -31,8 +35,21 @@ public class Animales{
         this.peso = peso;
         this.patas = patas;
         this.activo = activo;
-        this.tipo[1]= tipo; // Arreglar
+        this.tipo= tipo; 
         //this.cuidado = cuidado;
+        
+        Datos dato = new Datos(GestionFicheros.loadDatos());
+        Iterator < Cuidados > it = dato.getCuidados().iterator(); 
+        while (it.hasNext()) {
+            Cuidados pac = it.next();
+            if(pac.getNombre().equals(cuidado)){
+                this.cuidado=pac;
+            }
+            
+        }
+        
+        
+        
         this.peligroExtincion = peligroExtincion;
     }
 
@@ -53,8 +70,8 @@ public class Animales{
     public boolean getActivo (Animales animal){
         return animal.activo;
     }
-    public Cuidados getCuidado (Animales animal){
-        return animal.cuidado;
+    public Cuidados getCuidado (){
+        return cuidado;
     }
     public boolean getpeligroExtincion (Animales animal){
         return animal.peligroExtincion;
@@ -82,4 +99,11 @@ public class Animales{
     public void setpeligroExtincion (boolean dato){
         this.peligroExtincion = dato;
     }
+
+    @Override
+    public String toString() {
+        return "Animales{" + "tipo=" + tipo + ", especie=" + especie + ", raza=" + raza + ", peso=" + peso + ", patas=" + patas + ", activo=" + activo + ", area=" + area + ", cuidado=" + cuidado + ", peligroExtincion=" + peligroExtincion + '}';
+    }
+    
+    
 }

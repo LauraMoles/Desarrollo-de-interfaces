@@ -7,7 +7,10 @@ package zoo;
  */
 
 import herramientas.GestionFicheros;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,15 +21,15 @@ public class InterAnimales extends javax.swing.JFrame {
     /**
      * Creates new form InterAnimales
      */
+    
     public InterAnimales() {
         initComponents();
     }
 
     private Datos dato;
+    private Animales newAnimal;
+    private GestionFicheros gestionar;
     
-    public void añadir(Cuidados cuidado, int cuidadoIndice, int tipoIndice){ // arreglar los conbobox
-        Animales animal = new Animales(especie.getText(), raza.getText(), (float)peso.getValue(), (int)patas.getValue(),activo.isSelected(),tipo.getItemAt(tipoIndice),this.cuidado.getItemAt(cuidadoIndice),peligoExtincion.isSelected());
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -256,8 +259,16 @@ public class InterAnimales extends javax.swing.JFrame {
     }//GEN-LAST:event_peligoExtincionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //crear objeto animal y guardarlo 
-        
+        try {
+            newAnimal=GestionFicheros.añadirAnimal(especie.getText(), raza.getText(), 34f, (int)patas.getValue(),activo.isSelected(),tipo.getSelectedItem().toString(),this.cuidado.getSelectedItem().toString(),peligoExtincion.isSelected());
+            Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
+
+            GestionFicheros.saveCare(datosGeneral,newAnimal);
+                        
+        } catch (IOException ex) {
+            Logger.getLogger(InterCuidados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -265,32 +276,22 @@ public class InterAnimales extends javax.swing.JFrame {
      */
     
     public void cargar(){
-        dato = new Datos(GestionFicheros.loadCuidados("cuidados.dat"));
-        
+        dato = new Datos(GestionFicheros.loadDatos());
         cuidado.removeAllItems();
-        System.out.println(dato);
         int cont =0;
         String cuidadosOpciones[]= new String [dato.getCuidados().size()];
         
         Iterator < Cuidados > it = dato.getCuidados().iterator(); 
         while (it.hasNext()) {
-            
             Cuidados pac = it.next();
             cuidadosOpciones[cont]=(pac.getNombre());
-            System.out.println(pac.getNombre());
             cuidado.addItem(pac.getNombre());
-            
             cont++;
         }
-
     }
     
     public static void main(String args[]) {
-        
-        
-       
-        
-        
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
