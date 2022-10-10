@@ -1,6 +1,7 @@
 package zoo;
 
 import herramientas.GestionFicheros;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -24,7 +25,10 @@ public class inerEspecialidad extends javax.swing.JFrame implements Serializable
         initComponents();
     }
 
-    Especialidad especialidad ;
+    private Especialidad especialidad ;
+    private static File dir = new File ("datos/datos.dat");
+    private static Datos  datosGeneral = null;
+    private GestionFicheros gestionar = new GestionFicheros();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -205,16 +209,12 @@ public class inerEspecialidad extends javax.swing.JFrame implements Serializable
             peligro = 3;
         }
         
-        
-        
-        
-        try {
-            especialidad=GestionFicheros.añadirEspecialidad(nombre.getText(), salarionum, peligro, cantAnimales);
 
-            Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
-            GestionFicheros.saveCare(datosGeneral,especialidad);
+        try {
+            especialidad=GestionFicheros.añadir(nombre.getText(), salarionum, peligro, cantAnimales);
+
+            gestionar.saveCare(datosGeneral,especialidad);
             System.out.println("Especialidad " + datosGeneral.getEspecialidades());
-            System.out.println(datosGeneral);
         } catch (IOException ex) {
             Logger.getLogger(InterCuidados.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -252,6 +252,11 @@ public class inerEspecialidad extends javax.swing.JFrame implements Serializable
             java.util.logging.Logger.getLogger(inerEspecialidad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        
+        if (dir.exists()){
+            datosGeneral= new Datos(GestionFicheros.loadDatos());
+        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

@@ -1,5 +1,12 @@
 package zoo;
 
+import herramientas.GestionFicheros;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -14,6 +21,13 @@ public class interCuidadores extends javax.swing.JFrame {
     /**
      * Creates new form interCuidadores
      */
+    
+    private static File dir = new File ("datos/datos.dat");
+    private static Datos datosGeneral = null;
+    private Datos dato;
+    private Cuidadores cuidadoresGeneral;
+    private GestionFicheros gestionar = new GestionFicheros();
+    
     public interCuidadores() {
         initComponents();
     }
@@ -30,11 +44,11 @@ public class interCuidadores extends javax.swing.JFrame {
         fondo = new javax.swing.JPanel();
         Nombre = new javax.swing.JLabel();
         Titulo = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombre = new javax.swing.JTextField();
         Nombre1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        apellido = new javax.swing.JTextField();
         Nombre2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        especialidad = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,9 +69,9 @@ public class interCuidadores extends javax.swing.JFrame {
         Titulo.setText("Añadir cuidador");
         fondo.add(Titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 60));
 
-        jTextField1.setBackground(new java.awt.Color(240, 240, 240));
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        fondo.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 410, 60));
+        nombre.setBackground(new java.awt.Color(240, 240, 240));
+        nombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        fondo.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 410, 60));
 
         Nombre1.setBackground(new java.awt.Color(255, 255, 255));
         Nombre1.setFont(new java.awt.Font("Javanese Text", 0, 18)); // NOI18N
@@ -65,9 +79,9 @@ public class interCuidadores extends javax.swing.JFrame {
         Nombre1.setText("Apellido: ");
         fondo.add(Nombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 140, 60));
 
-        jTextField2.setBackground(new java.awt.Color(240, 240, 240));
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        fondo.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 410, 60));
+        apellido.setBackground(new java.awt.Color(240, 240, 240));
+        apellido.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        fondo.add(apellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 220, 410, 60));
 
         Nombre2.setBackground(new java.awt.Color(255, 255, 255));
         Nombre2.setFont(new java.awt.Font("Javanese Text", 0, 18)); // NOI18N
@@ -75,13 +89,18 @@ public class interCuidadores extends javax.swing.JFrame {
         Nombre2.setText("Especialidad: ");
         fondo.add(Nombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 140, 60));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        fondo.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 410, 50));
+        especialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        fondo.add(especialidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 410, 50));
 
         jButton1.setBackground(new java.awt.Color(102, 255, 204));
         jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Añadir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         fondo.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 440, 160, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -98,15 +117,40 @@ public class interCuidadores extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            cuidadoresGeneral=GestionFicheros.añadir(nombre.getText(), apellido.getText(), especialidad.getSelectedItem().toString());
+            Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
+            gestionar.saveCare(datosGeneral,cuidadoresGeneral);
+        } catch (IOException ex) {
+            Logger.getLogger(InterCuidados.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
+        
+
+    
+    
+    public void cargar(){
+        dato = new Datos(GestionFicheros.loadDatos());
+        especialidad.removeAllItems();
+        int cont =0;
+        String especialidadOpciones[]= new String [dato.getEspecialidades().size()];
+        
+        Iterator < Especialidad > it = dato.getEspecialidades().iterator(); 
+        while (it.hasNext()) {
+            Especialidad pac = it.next();
+            especialidadOpciones[cont]=(pac.getEspecialidad());
+            especialidad.addItem(pac.getEspecialidad());
+            cont++;
+        }
+    }
+    
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -125,10 +169,17 @@ public class interCuidadores extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        if (dir.exists()){
+            datosGeneral= new Datos(GestionFicheros.loadDatos());
+        }
+        System.out.println(datosGeneral);
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new interCuidadores().setVisible(true);
+                interCuidadores a = new interCuidadores();
+                a.setVisible(true);
+                a.cargar();
             }
         });
     }
@@ -138,10 +189,10 @@ public class interCuidadores extends javax.swing.JFrame {
     private javax.swing.JLabel Nombre1;
     private javax.swing.JLabel Nombre2;
     private javax.swing.JLabel Titulo;
+    private javax.swing.JTextField apellido;
+    private javax.swing.JComboBox<String> especialidad;
     private javax.swing.JPanel fondo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField nombre;
     // End of variables declaration//GEN-END:variables
 }

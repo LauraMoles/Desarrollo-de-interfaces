@@ -260,7 +260,7 @@ public class InterAnimales extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            newAnimal=GestionFicheros.añadirAnimal(especie.getText(), raza.getText(), 34f, (int)patas.getValue(),activo.isSelected(),tipo.getSelectedItem().toString(),this.cuidado.getSelectedItem().toString(),peligoExtincion.isSelected());
+            newAnimal=GestionFicheros.añadir(especie.getText(), raza.getText(), 34f, (int)patas.getValue(),activo.isSelected(),tipo.getSelectedItem().toString(),this.cuidado.getSelectedItem().toString(),peligoExtincion.isSelected());
             Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
 
             GestionFicheros.saveCare(datosGeneral,newAnimal);

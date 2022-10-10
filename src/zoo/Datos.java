@@ -72,7 +72,7 @@ public class Datos implements Serializable{
 
     @Override
     public String toString() {
-        return "Datos{" + "cuidados=" + cuidados + ", cuidadores=" + cuidadores + ", animales=" + animales + ", especialidades=" + especialidades + '}';
+        return "Datos{" + "\n CUIDADOS=" + cuidados + "\n CUIDADORES=" + cuidadores + "\n ANIMALES=" + animales + "\n ESPECIALIDADES=" + especialidades + '}';
     }
     
     

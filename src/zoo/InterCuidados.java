@@ -233,7 +233,7 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            cuidadoGeneral=GestionFicheros.añadirCuidado(pelaje.getText(), comida.getText(), habitat.getText(), (float)Integer.parseInt(precioComida.getValue().toString()), (float)Integer.parseInt(costeMedio.getValue().toString()), (float)Integer.parseInt(cicloComida.getValue().toString()),nombreCuidado.getText());
+            cuidadoGeneral=GestionFicheros.añadir(pelaje.getText(), comida.getText(), habitat.getText(), (float)Integer.parseInt(precioComida.getValue().toString()), (float)Integer.parseInt(costeMedio.getValue().toString()), (float)Integer.parseInt(cicloComida.getValue().toString()),nombreCuidado.getText());
             Datos datosGeneral= new Datos(GestionFicheros.loadDatos());
             gestionar.saveCare(datosGeneral,cuidadoGeneral);
         } catch (IOException ex) {
@@ -274,10 +274,7 @@ public class InterCuidados extends javax.swing.JFrame implements Serializable{
             datosGeneral= new Datos(GestionFicheros.loadDatos());
         }
         
-        
-//        if ( cuidadoMain == null){
-//            
-//        }
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

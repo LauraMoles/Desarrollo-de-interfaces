@@ -118,7 +118,7 @@ public class Cuidados implements Serializable{
 
     @Override
     public String toString() {
-        return "Cuidados{" + "pelaje=" + pelaje + ", tipoComida=" + tipoComida + ", habitat=" + habitat + ", precioComida=" + precioComida + ", costeMedio=" + costeMedio + ", cicloComida=" + cicloComida + ", nombre=" + nombre + '}';
+        return "\n\tpelaje=" + pelaje + ", tipoComida=" + tipoComida + ", habitat=" + habitat + ", precioComida=" + precioComida + ", costeMedio=" + costeMedio + ", cicloComida=" + cicloComida + ", nombre=" + nombre + "\n";
     }
     public String toString2(){
         return "Lista cuidados"+todosCuidados.toString();

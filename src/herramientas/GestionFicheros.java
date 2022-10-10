@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import zoo.Animales;
+import zoo.Cuidadores;
 import zoo.Cuidados;
 import zoo.Datos;
 import zoo.Especialidad;
@@ -63,9 +64,20 @@ public class GestionFicheros implements Serializable{
         output.close(); // Se cierra la conexion con el fichero
         
     }
-    public static void saveCare(Datos datosgeneral, Especialidad especialidad) throws IOException {
+    public void saveCare(Datos datosgeneral, Especialidad especialidad) throws IOException {
         Datos dato = new Datos(datosgeneral); // Se hace una copia de los datos que hay actualmente en el fichero 
-        dato.setEspecialidades(especialidad); // se le añaden los nuevos Animales
+        dato.setEspecialidades(especialidad); // se le añaden las nuevas especialidades 
+        
+        
+        fileOut = new FileOutputStream("datos/datos.dat"); // Se dice donde se van a guardar los datos
+        output = new ObjectOutputStream(fileOut); // Se selecciona
+        output.writeObject(dato); // Se escriben los datos
+        output.close(); // Se cierra la conexion con el fichero
+        
+    }
+    public static void saveCare(Datos datosgeneral, Cuidadores cuidador) throws IOException {
+        Datos dato = new Datos(datosgeneral); // Se hace una copia de los datos que hay actualmente en el fichero 
+        dato.setCuidadores(cuidador); // se le añaden los nuevos Cuidadores
         
         FileOutputStream fileOut;
         fileOut = new FileOutputStream("datos/datos.dat"); // Se dice donde se van a guardar los datos
@@ -115,22 +127,26 @@ public class GestionFicheros implements Serializable{
     }
     
     
-    public static Cuidados añadirCuidado(String pelaje, String comida, String habitat, float precioComida, float costeMedio, float cicloComida, String nombreCuidado){
+    public static Cuidados añadir(String pelaje, String comida, String habitat, float precioComida, float costeMedio, float cicloComida, String nombreCuidado){
         JOptionPane.showMessageDialog(null,"Añadido cuidado: " + nombreCuidado);
         return new Cuidados(pelaje, comida, habitat, precioComida, costeMedio, cicloComida,nombreCuidado);
 
     }
 
-    public static Animales añadirAnimal(String especie, String raza, float peso, int patas, boolean activo, String tipo, String nombreCuidado, boolean peligoExtincion){
+    public static Animales añadir(String especie, String raza, float peso, int patas, boolean activo, String tipo, String nombreCuidado, boolean peligoExtincion){
         JOptionPane.showMessageDialog(null,"Añadido nuevo animal");
         return new Animales(especie, raza, peso, patas, activo, tipo,nombreCuidado,peligoExtincion);
 
     }
     
-    //. peligro, (int)cantidad.getValue()
-    public static Especialidad añadirEspecialidad(String nombre, float salario, int peligro, int cantidad){
+    public static Especialidad añadir(String nombre, float salario, int peligro, int cantidad){
         JOptionPane.showMessageDialog(null,"Añadida la especialidad: " + nombre);
         return new Especialidad(nombre, cantidad, peligro, cantidad);
+
+    }
+    public static Cuidadores añadir(String nombre, String apellidos, String especialidad){
+        JOptionPane.showMessageDialog(null,"Añadido al cuidador: " + nombre + " " + apellidos);
+        return new Cuidadores(nombre, apellidos, especialidad);
 
     }
     

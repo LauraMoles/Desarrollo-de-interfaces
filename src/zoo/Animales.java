@@ -102,7 +102,7 @@ public class Animales implements Serializable{
 
     @Override
     public String toString() {
-        return "Animales{" + "tipo=" + tipo + ", especie=" + especie + ", raza=" + raza + ", peso=" + peso + ", patas=" + patas + ", activo=" + activo + ", area=" + area + ", cuidado=" + cuidado + ", peligroExtincion=" + peligroExtincion + '}';
+        return "\n\ttipo=" + tipo + ", especie=" + especie + ", raza=" + raza + ", peso=" + peso + ", patas=" + patas + ", activo=" + activo + ", area=" + area +  ", peligroExtincion=" + peligroExtincion + ", cuidado=" + cuidado + "\n";
     }
     
     

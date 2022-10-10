@@ -60,7 +60,7 @@ public class Especialidad implements Serializable{
 
     @Override
     public String toString() {
-        return "Especialidad{" + "especialidad=" + especialidad + ", salarioMedio=" + salarioMedio + ", peligrosidad=" + peligrosidad + ", cantAnimales=" + cantAnimales + '}';
+        return "\n\tespecialidad=" + especialidad + ", salarioMedio=" + salarioMedio + ", peligrosidad=" + peligrosidad + ", cantAnimales=" + cantAnimales + "\n";
     }
     
     
