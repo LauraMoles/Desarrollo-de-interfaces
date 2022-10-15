@@ -189,6 +189,7 @@ public class inerEspecialidad extends javax.swing.JFrame implements Serializable
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
