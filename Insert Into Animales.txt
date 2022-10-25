@@ -1,0 +1,48 @@
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Tianlong', 'Dragon celestial', 'Chino', '0000');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Shenlong', 'Dragon espiritual', 'Chino', '0001');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Fucanglong', 'Dragon espiritual', 'Chino', '0002');
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Ladón', 'Dragon', 'Griego', '0003');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Hydra', 'Dragon acuatico', 'Griego', '0004');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Piton', 'Dragon', 'Griego', '0026');
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Nidhogg', 'Dragon', 'Nordico', '0005');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Fafnir', 'Dragon', 'Nordico', '0006');
+
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Bennu', 'Ave fenix', 'Egipcio', '0007');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Phoînix', 'Ave fenix', 'Griego', '0008');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('fenghuang', 'Ave fenix', 'Chino', '0009');
+
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Manticora', 'Manticora', 'Persa', '0010');
+
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Arthur', 'Unicornio', 'Blanco', '0011');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Relámpago', 'Unicornio', 'Blanco', '0012');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Coral', 'Unicornio', 'Rosa', '0013');
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Quetzalcóatl', 'Serpiente emplumada', 'Mexicano', '0014');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Kukulcán', 'Serpiente emplumada', 'Maya', '0015');
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Cerbero', 'Cerbero', 'Griego', '0016');
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Brontes', 'Ciclope', 'Griego', '0017');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Esteropes', 'Ciclope', 'Griego', '0018');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Arges', 'Ciclope', 'Griego', '0019');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Medusa', 'Medusa', 'Griego', '0020');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Arpia1', 'Arpias', 'Griego', '0021');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Arpia2', 'Arpias', 'Griego', '0022');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Arpia3', 'Arpias', 'Griego', '0023');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Asterion', 'Minotauro', 'Griego', '0024');
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('Leon de nemea', 'Leon de nemea', 'Griego', '0025');
+
+
+
+INSERT INTO `animales` (`nombre`, `raza`, `subraza`, `chip`) VALUES ('', '', '', '0000');
+
