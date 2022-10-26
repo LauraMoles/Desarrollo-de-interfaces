@@ -1,0 +1,47 @@
+CREATE TABLE personas (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	usuario VARCHAR(8) NOT NULL UNIQUE,
+	telefono INT(9),
+	nombre VARCHAR(25) NOT NULL,
+	apellido VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE administradores(
+	id INT UNSIGNED UNIQUE NOT NULL,
+	FOREIGN KEY (id) REFERENCES personas(id)
+);
+CREATE TABLE cuidadores(
+	id INT UNSIGNED UNIQUE NOT NULL,
+	FOREIGN KEY (id) REFERENCES personas(id)
+);
+
+CREATE TABLE especialidad (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	nombre VARCHAR(25) NOT NULL,
+	descripcion VARCHAR(150),
+	id_cuidador INT UNSIGNED,
+	FOREIGN KEY (id_cuidador) REFERENCES cuidadores(id)
+);
+
+CREATE TABLE animales(
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	nombre VARCHAR(25),
+	raza VARCHAR(25),
+	subraza VARCHAR(25),
+	chip INT(4)
+);
+
+CREATE TABLE cuidado(
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	nombre VARCHAR(25) NOT NULL,
+	descripcion VARCHAR(150)
+);
+
+CREATE TABLE tareas(
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	fecha DATETIME NOT NULL,
+	id_cuidado INT UNSIGNED NOT NULL,
+	id_animal INT UNSIGNED NOT NULL,
+	id_cuidador INT UNSIGNED
+);
+
