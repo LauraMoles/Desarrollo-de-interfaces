@@ -61,9 +61,13 @@ public class InterHeroes extends javax.swing.JFrame {
             ResultSet rs2=stmt2.executeQuery(consulta);
             
              DefaultTableModel model = (DefaultTableModel)tabla.getModel();
-            if (model.getRowCount() > 0){
-                    model.removeRow(model.getRowCount()-1);
-                }
+//            System.out.println("num filas " + model.getRowCount());
+//             for (int i = 0; i < model.getRowCount(); i++) {
+//                 System.out.println("borrando fila " + i);
+//                 System.out.println("fila: "+ model.getValueAt(i, 3));
+//                 model.removeRow(tabla.getSelectedRow());
+//                
+//                }
             
             while(rs2.next()){
                 Object [] row ={rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7)}; // Rellenar la fila con los datos correspondientes
@@ -340,7 +344,7 @@ public class InterHeroes extends javax.swing.JFrame {
         nombreAnimal.setText(model.getValueAt(pos, 4).toString());
         try {
             String consulta = "SELECT animales.nombre, cuidado.nombre, cuidado.descripcion, tareas.fecha_realizacion, tareas.finalicazo FROM animales, cuidado, tareas where tareas.id="+model.getValueAt(pos, 0)+" AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal";
-            System.out.println(consulta);
+            //System.out.println(consulta);
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             rs.next();
@@ -368,7 +372,7 @@ public class InterHeroes extends javax.swing.JFrame {
         if (termiando.isSelected()){
             try {
                 String consulta = "UPDATE `tareas` SET `finalicazo` = 1 WHERE tareas.id ="+model.getValueAt(pos, 0);
-                System.out.println(consulta);
+                //System.out.println(consulta);
                 Statement stmt = (Statement) bd.createStatement();
                 stmt.execute(consulta);
                 this.cargar.setVisible(false);
@@ -377,10 +381,15 @@ public class InterHeroes extends javax.swing.JFrame {
                 Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        this.cargar.setVisible(true);
+             System.out.println("num filas " + model.getRowCount());
+             int aux = model.getRowCount();
+             
+             for (int i = 0; i < aux; i++) {
+                 model.removeRow(0);
+                }
+        this.cargarTareas();
 
         this.panelTabla.setVisible(true);
-        //comprobar estado de la tarea
     }//GEN-LAST:event_atrasActionPerformed
 
     /**

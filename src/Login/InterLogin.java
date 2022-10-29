@@ -46,7 +46,6 @@ public class InterLogin extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         pass = new javax.swing.JTextField();
@@ -73,19 +72,6 @@ public class InterLogin extends javax.swing.JFrame {
         jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 0, 620, 80));
 
-        jLabel2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Registrarse");
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jLabel2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, 170, 40));
-
         jLabel3.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Nombre de usuario -->");
@@ -102,7 +88,7 @@ public class InterLogin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 290, 150, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 150, 40));
 
         pass.setBackground(new java.awt.Color(242, 242, 242));
         pass.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
@@ -239,8 +225,7 @@ public class InterLogin extends javax.swing.JFrame {
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             
-            while(rs.next())
-            {
+            while(rs.next()) {
                 if (usuario.equalsIgnoreCase(rs.getString(2))){
                     try{
                         System.out.println("Comprobando dios");
@@ -274,18 +259,12 @@ public class InterLogin extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null,"Usuario o contraseña incorrectos");
                         }
                     }
-                }
+                } 
             }
         } catch (SQLException sqle) { 
           System.out.println("Error en la ejecución:" + sqle.getErrorCode() + " " + sqle.getMessage());    
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        this.setVisible(false);
-        InterRegistrar registrar = new InterRegistrar();
-        registrar.setVisible(true);
-    }//GEN-LAST:event_jLabel2MouseClicked
 
     private void barraSuperiorMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barraSuperiorMousePressed
         // TODO add your handling code here:
@@ -321,7 +300,6 @@ public class InterLogin extends javax.swing.JFrame {
     private javax.swing.JLabel cerrar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
