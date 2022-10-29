@@ -28,6 +28,7 @@ public class InterHeroes extends javax.swing.JFrame {
      */
     private int mouseX,mouseY;
     private String nombreHeroe, nameUser;
+    private int pos;
     
    
     
@@ -54,26 +55,21 @@ public class InterHeroes extends javax.swing.JFrame {
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             rs.next();
-            System.out.println("id usuaro: " + rs.getString(1));
-            
-            //SELECT usuarios.id, usuarios.usuario, tareas.* FROM usuarios, tareas where (usuarios.id=1) and tareas.id_heroe=1
-            consulta = "SELECT usuarios.id, usuarios.usuario, tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre FROM usuarios, tareas, cuidado,animales where usuarios.id="+Integer.parseInt(rs.getString(1))+" AND tareas.id_heroe="+Integer.parseInt(rs.getString(1))+" AND tareas.id_cuidado = cuidado.id AND tareas.id_animal = animales.id";
-            //SELECT usuarios.id, usuarios.usuario, tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre, animales.descripcion FROM usuarios, tareas, cuidado,animales where usuarios.id=2 AND tareas.id_heroe=2 AND tareas.id_cuidado = cuidado.id AND tareas.id_animal = animales.id
-             System.out.println(consulta);
+
+            consulta = "SELECT usuarios.id, usuarios.usuario, tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre FROM usuarios, tareas, cuidado,animales where usuarios.id="+Integer.parseInt(rs.getString(1))+" AND tareas.id_heroe="+Integer.parseInt(rs.getString(1))+" AND tareas.id_cuidado = cuidado.id AND tareas.id_animal = animales.id AND tareas.finalicazo=0";
             Statement stmt2 = (Statement) bd.createStatement();
             ResultSet rs2=stmt2.executeQuery(consulta);
             
-            while(rs2.next())
-            {
-                System.out.println("datos: \n"+rs2.getString(3) +"\n"+ rs2.getString(4) +"\n"+ rs2.getString(5) +"\n"+ rs2.getString(6) +"\n"+ rs2.getString(7));
-                System.out.println(consulta);
-
-                DefaultTableModel model = (DefaultTableModel)tabla.getModel();
+             DefaultTableModel model = (DefaultTableModel)tabla.getModel();
+            if (model.getRowCount() > 0){
+                    model.removeRow(model.getRowCount()-1);
+                }
+            
+            while(rs2.next()){
                 Object [] row ={rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
-            
-           
+             
         } catch (SQLException ex) {
             Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -333,9 +329,9 @@ public class InterHeroes extends javax.swing.JFrame {
     }//GEN-LAST:event_cargarActionPerformed
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-
+        pos = -5;
         DefaultTableModel model = (DefaultTableModel)tabla.getModel();
-        int pos = tabla.getSelectedRow();
+        pos = tabla.getSelectedRow();
         this.panelTabla.setVisible(false);
 
         this.panelInformacio.setVisible(true);
@@ -343,10 +339,7 @@ public class InterHeroes extends javax.swing.JFrame {
         imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/animales/dragones/" + model.getValueAt(pos, 4)+".jpg")));
         nombreAnimal.setText(model.getValueAt(pos, 4).toString());
         try {
-            String consulta = "SELECT animales.nombre, cuidado.nombre, cuidado.descripcion, tareas.fecha_realizacion FROM animales, cuidado, tareas where tareas.id="+model.getValueAt(pos, 0)+" AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal";
-            //SELECT animales.nombre, animales.descripcion, cuidado.descripcion FROM animales, cuidado where animales.nombre='Tianlong' AND cuidado.id=1
-            //SELECT animales.nombre, cuidado.descripcion, tareas.fecha_realizacion FROM animales, cuidado, tareas where tareas.id=1 and cuidado.id = tareas.id and animales.id = tareas.id_animal
-            //"SELECT animales.nombre, cuidado.descripcion, tareas.fecha_realizacion FROM animales, cuidado, tareas where tareas.id='"model.getValueAt(pos, 1)"' AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal"
+            String consulta = "SELECT animales.nombre, cuidado.nombre, cuidado.descripcion, tareas.fecha_realizacion, tareas.finalicazo FROM animales, cuidado, tareas where tareas.id="+model.getValueAt(pos, 0)+" AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal";
             System.out.println(consulta);
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
@@ -355,6 +348,12 @@ public class InterHeroes extends javax.swing.JFrame {
             descripcionAnimal.setText(rs.getString(3));
             nombreCuidado.setText(rs.getString(2));
             finFecha.setText(rs.getString(4));
+            if (Integer.parseInt(rs.getString(5)) == 0){
+                termiando.setSelected(false); 
+            }else{
+                termiando.setSelected(true); 
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -362,8 +361,24 @@ public class InterHeroes extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaMouseClicked
 
     private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
+        DefaultTableModel model = (DefaultTableModel)tabla.getModel();
         this.panelInformacio.setVisible(false);
         this.atras.setVisible(false);
+        
+        if (termiando.isSelected()){
+            try {
+                String consulta = "UPDATE `tareas` SET `finalicazo` = 1 WHERE tareas.id ="+model.getValueAt(pos, 0);
+                System.out.println(consulta);
+                Statement stmt = (Statement) bd.createStatement();
+                stmt.execute(consulta);
+                this.cargar.setVisible(false);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.cargar.setVisible(true);
+
         this.panelTabla.setVisible(true);
         //comprobar estado de la tarea
     }//GEN-LAST:event_atrasActionPerformed
