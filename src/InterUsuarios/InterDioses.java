@@ -21,11 +21,17 @@ public class InterDioses extends javax.swing.JFrame {
     public InterDioses() {
         initComponents();
         titulo.setText("Dios: "+nombreDios);
+        volver.setVisible(false);
+        crearUser.setVisible(false);
+        modificar.setVisible(false);
     }
     public InterDioses(String name) {
         this.nombreDios = name;
         initComponents();
         titulo.setText("Dios: "+nombreDios);
+        volver.setVisible(false);
+        crearUser.setVisible(false);
+        modificar.setVisible(false);
     }
 
     /**
@@ -42,6 +48,45 @@ public class InterDioses extends javax.swing.JFrame {
         cerrar1 = new javax.swing.JLabel();
         fondo = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
+        volver = new javax.swing.JButton();
+        botones = new javax.swing.JPanel();
+        agregar = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jButton16 = new javax.swing.JButton();
+        agregarUsers = new javax.swing.JButton();
+        editar = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        cambiarPass = new javax.swing.JPanel();
+        jButton22 = new javax.swing.JButton();
+        jButton24 = new javax.swing.JButton();
+        modificar = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        crearUser = new javax.swing.JPanel();
+        tituloCrearUser = new javax.swing.JLabel();
+        datosUser = new javax.swing.JPanel();
+        nombre = new javax.swing.JLabel();
+        insertNombre = new javax.swing.JTextField();
+        apellidos = new javax.swing.JLabel();
+        insertApellidos = new javax.swing.JTextField();
+        telefono = new javax.swing.JLabel();
+        numTel = new javax.swing.JTextField();
+        nikname = new javax.swing.JLabel();
+        insertnik = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
         fondoImagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,7 +154,269 @@ public class InterDioses extends javax.swing.JFrame {
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titulo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
-        fondo.add(titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 720, 60));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fondo.add(titulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 660, 60));
+
+        volver.setBackground(new java.awt.Color(91, 65, 43));
+        volver.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        volver.setForeground(new java.awt.Color(255, 255, 255));
+        volver.setText("Volver");
+        volver.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        volver.setBorderPainted(false);
+        volver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        volver.setFocusPainted(false);
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverActionPerformed(evt);
+            }
+        });
+        fondo.add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 620, 21));
+
+        botones.setOpaque(false);
+        botones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        agregar.setBackground(new java.awt.Color(255, 255, 255));
+        agregar.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
+
+        jButton2.setBackground(new java.awt.Color(216, 178, 142));
+        jButton2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton2.setText("agregar Animales");
+        jButton2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton2.setBorderPainted(false);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusPainted(false);
+        agregar.add(jButton2);
+
+        jButton14.setBackground(new java.awt.Color(216, 178, 142));
+        jButton14.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton14.setText("agregar cuidados");
+        jButton14.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton14.setBorderPainted(false);
+        jButton14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton14.setFocusPainted(false);
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+        agregar.add(jButton14);
+
+        jButton15.setBackground(new java.awt.Color(216, 178, 142));
+        jButton15.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton15.setText("agregar especialidades");
+        jButton15.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton15.setBorderPainted(false);
+        jButton15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton15.setFocusPainted(false);
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+        agregar.add(jButton15);
+
+        jButton16.setBackground(new java.awt.Color(216, 178, 142));
+        jButton16.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton16.setText("agregar tAREAS");
+        jButton16.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton16.setBorderPainted(false);
+        jButton16.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton16.setFocusPainted(false);
+        agregar.add(jButton16);
+
+        agregarUsers.setBackground(new java.awt.Color(216, 178, 142));
+        agregarUsers.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        agregarUsers.setText("agregar USUARIOS");
+        agregarUsers.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        agregarUsers.setBorderPainted(false);
+        agregarUsers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        agregarUsers.setFocusPainted(false);
+        agregarUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarUsersActionPerformed(evt);
+            }
+        });
+        agregar.add(agregarUsers);
+
+        botones.add(agregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 290, 230));
+
+        editar.setBackground(new java.awt.Color(255, 255, 255));
+        editar.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
+
+        jButton1.setBackground(new java.awt.Color(216, 178, 142));
+        jButton1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton1.setText("Editar Animales");
+        jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton1.setBorderPainted(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusPainted(false);
+        editar.add(jButton1);
+
+        jButton8.setBackground(new java.awt.Color(216, 178, 142));
+        jButton8.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton8.setText("Editar cuidados");
+        jButton8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton8.setBorderPainted(false);
+        jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton8.setFocusPainted(false);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        editar.add(jButton8);
+
+        jButton9.setBackground(new java.awt.Color(216, 178, 142));
+        jButton9.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton9.setText("Editar especialidades");
+        jButton9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton9.setBorderPainted(false);
+        jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton9.setFocusPainted(false);
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        editar.add(jButton9);
+
+        jButton10.setBackground(new java.awt.Color(216, 178, 142));
+        jButton10.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton10.setText("editar tAREAS");
+        jButton10.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton10.setBorderPainted(false);
+        jButton10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton10.setFocusPainted(false);
+        editar.add(jButton10);
+
+        jButton11.setBackground(new java.awt.Color(216, 178, 142));
+        jButton11.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton11.setText("Editar USUARIOS");
+        jButton11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton11.setBorderPainted(false);
+        jButton11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton11.setFocusPainted(false);
+        editar.add(jButton11);
+
+        botones.add(editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 300, 230));
+
+        cambiarPass.setBackground(new java.awt.Color(255, 255, 255));
+        cambiarPass.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
+
+        jButton22.setBackground(new java.awt.Color(216, 178, 142));
+        jButton22.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton22.setText("CAMBIAR PASSWORD DIOSES");
+        jButton22.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton22.setBorderPainted(false);
+        jButton22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton22.setFocusPainted(false);
+        cambiarPass.add(jButton22);
+
+        jButton24.setBackground(new java.awt.Color(216, 178, 142));
+        jButton24.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton24.setText("CAMBIAR PASSWORD HEROES");
+        jButton24.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        jButton24.setBorderPainted(false);
+        jButton24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton24.setFocusPainted(false);
+        cambiarPass.add(jButton24);
+
+        botones.add(cambiarPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 610, 60));
+
+        fondo.add(botones, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 660, 350));
+
+        modificar.setOpaque(false);
+        modificar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        modificar.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 300, 281));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("jLabel1");
+        modificar.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
+
+        jLabel2.setText("jLabel2");
+        modificar.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, -1, -1));
+        modificar.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, 130, -1));
+
+        jLabel3.setText("jLabel3");
+        modificar.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        modificar.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, -1, -1));
+
+        jButton3.setText("jButton3");
+        modificar.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 300, -1, -1));
+
+        jButton4.setText("jButton4");
+        modificar.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 300, -1, -1));
+
+        fondo.add(modificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 660, 350));
+
+        crearUser.setOpaque(false);
+        crearUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        tituloCrearUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
+        tituloCrearUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tituloCrearUser.setText("Crear usuario");
+        crearUser.add(tituloCrearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
+
+        datosUser.setLayout(new java.awt.GridLayout(0, 1));
+
+        nombre.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        nombre.setText("Nombre");
+        datosUser.add(nombre);
+
+        insertNombre.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertNombre.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(insertNombre);
+
+        apellidos.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        apellidos.setText("Apelllido/os");
+        datosUser.add(apellidos);
+
+        insertApellidos.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertApellidos.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(insertApellidos);
+
+        telefono.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        telefono.setText("Telefono");
+        datosUser.add(telefono);
+
+        numTel.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        numTel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(numTel);
+
+        nikname.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        nikname.setText("nombre de usuario");
+        datosUser.add(nikname);
+
+        insertnik.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertnik.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(insertnik);
+
+        crearUser.add(datosUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 590, 190));
+
+        jButton5.setBackground(new java.awt.Color(223, 208, 181));
+        jButton5.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton5.setText("Crear");
+        jButton5.setBorderPainted(false);
+        jButton5.setFocusPainted(false);
+        crearUser.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, 260, -1));
+
+        fondo.add(crearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 660, 350));
 
         fondoImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoDioses.jpg"))); // NOI18N
         fondo.add(fondoImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 520));
@@ -140,6 +447,39 @@ public class InterDioses extends javax.swing.JFrame {
         Login.InterLogin seleccion = new Login.InterLogin();
         seleccion.setVisible(true);
     }//GEN-LAST:event_cerrarSesionMouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void agregarUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarUsersActionPerformed
+        volver.setVisible(true);
+        botones.setVisible(false);
+        crearUser.setVisible(true);
+    }//GEN-LAST:event_agregarUsersActionPerformed
+
+    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
+        if(crearUser.isVisible()){
+            crearUser.setVisible(false);
+            botones.setVisible(true);
+        }else if(modificar.isVisible()){
+            modificar.setVisible(false);
+            botones.setVisible(true);
+        }
+        this.volver.setVisible(false);
+    }//GEN-LAST:event_volverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,11 +519,50 @@ public class InterDioses extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel agregar;
+    private javax.swing.JButton agregarUsers;
+    private javax.swing.JLabel apellidos;
     private javax.swing.JPanel barraSuperior;
+    private javax.swing.JPanel botones;
+    private javax.swing.JPanel cambiarPass;
     private javax.swing.JLabel cerrar;
     private javax.swing.JLabel cerrar1;
+    private javax.swing.JPanel crearUser;
+    private javax.swing.JPanel datosUser;
+    private javax.swing.JPanel editar;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel fondoImagen;
+    private javax.swing.JTextField insertApellidos;
+    private javax.swing.JTextField insertNombre;
+    private javax.swing.JTextField insertnik;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton24;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel modificar;
+    private javax.swing.JLabel nikname;
+    private javax.swing.JLabel nombre;
+    private javax.swing.JTextField numTel;
+    private javax.swing.JLabel telefono;
     private javax.swing.JLabel titulo;
+    private javax.swing.JLabel tituloCrearUser;
+    private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }
