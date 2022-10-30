@@ -5,10 +5,14 @@
  */
 package InterUsuarios;
 
-import java.util.Properties;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
+import Herramientas.ConfBD;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -18,6 +22,8 @@ import org.jdatepicker.impl.UtilDateModel;
  */
 public class InterDioses extends javax.swing.JFrame {
 
+    ConfBD conexion = new ConfBD ("localhost","3306","zoo","root","");
+    Connection bd = conexion.makeConnect();
     /**
      * Creates new form InterCuidadores
      */
@@ -43,22 +49,104 @@ public class InterDioses extends javax.swing.JFrame {
         
     }
     public InterDioses(String name) {
-        this.nombreDios = name;
-        initComponents();
-        titulo.setText("Dios: "+nombreDios);
-        volver.setVisible(false);
-        crearUser.setVisible(false);
-        crearCuidados.setVisible(false);
-        crearAnimales.setVisible(false);
-        crearTareas.setVisible(false);
-        crearEspecialidad.setVisible(false);
-        editarAnimales.setVisible(false);
-        editarCuidado.setVisible(false);
-        editarEspecialidades.setVisible(false);
-        editarTareas.setVisible(false);
-        editarUsuarios.setVisible(false);
-        editarDioses.setVisible(false);
-        editarHeroes.setVisible(false);
+        
+            this.nombreDios = name;
+            String consulta;
+            Statement stmt;
+            ResultSet rs;
+            DefaultTableModel model;
+            
+            
+            initComponents();
+            titulo.setText("Dios: "+nombreDios);
+            
+            //Ocultar interfaces secundarias
+            volver.setVisible(false);
+            crearUser.setVisible(false);
+            crearCuidados.setVisible(false);
+            crearAnimales.setVisible(false);
+            crearTareas.setVisible(false);
+            crearEspecialidad.setVisible(false);
+            editarAnimales.setVisible(false);
+            editarCuidado.setVisible(false);
+            editarEspecialidades.setVisible(false);
+            editarTareas.setVisible(false);
+            editarUsuarios.setVisible(false);
+            editarDioses.setVisible(false);
+            editarHeroes.setVisible(false);
+            
+            
+            //rellenar los JCombo box
+            
+        try {
+            consulta = "SELECT * FROM cuidado";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            
+            while(rs.next()){
+                cuidadoTareas.addItem(rs.getNString(2));
+            }
+            
+            consulta = "SELECT * FROM animales";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            
+            while(rs.next()){
+                AnimalTareas.addItem(rs.getNString(2));
+            }
+            
+            consulta = "SELECT usuarios.nombre, usuarios.apellido FROM usuarios, heroes WHERE usuarios.id=heroes.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            
+            while(rs.next()){
+                heroeTareas.addItem(rs.getString(1) + " " + rs.getNString(2));
+                heroeEspecialidad.addItem(rs.getString(1) + " " + rs.getNString(2));
+            }
+            
+            
+            
+            
+            //tablaAnimales
+             consulta = "SELECT * FROM animales";
+             stmt = (Statement) bd.createStatement();
+             rs=stmt.executeQuery(consulta);
+            
+             model = (DefaultTableModel)tablaAnimales.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+            
+            //tablaCuidados
+             consulta = "SELECT * FROM especialidades";
+             stmt = (Statement) bd.createStatement();
+             rs=stmt.executeQuery(consulta);
+            
+             model = (DefaultTableModel)tablaCuidados.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+            
+            //tablaEspecialidades
+            consulta = "SELECT especialidades.id, especialidades.nombre, usuarios.nombre FROM especialidades, heroes, usuarios where especialidades.id_heroe= heroes.id and usuarios.id = heroes.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            
+            model = (DefaultTableModel)tablaEspecialidades.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         
  
@@ -234,7 +322,7 @@ public class InterDioses extends javax.swing.JFrame {
         nombre3 = new javax.swing.JLabel();
         insertNombreEspecialidad = new javax.swing.JTextField();
         apellidos3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        heroeEspecialidad = new javax.swing.JComboBox<>();
         telefono2 = new javax.swing.JLabel();
         jButton12 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -561,6 +649,11 @@ public class InterDioses extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaCuidados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCuidadosMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tablaCuidados);
 
         editarCuidado.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 300, 281));
@@ -650,6 +743,11 @@ public class InterDioses extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaEspecialidades.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaEspecialidadesMouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(tablaEspecialidades);
 
         editarEspecialidades.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 300, 281));
@@ -701,7 +799,6 @@ public class InterDioses extends javax.swing.JFrame {
         jPanel3.add(tituloCrearUser14);
 
         editHeroeEspecialidades.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        editHeroeEspecialidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel3.add(editHeroeEspecialidades);
 
         tituloCrearUser15.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
@@ -1163,6 +1260,11 @@ public class InterDioses extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaAnimales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAnimalesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaAnimales);
 
         editarAnimales.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 300, 281));
@@ -1378,8 +1480,8 @@ public class InterDioses extends javax.swing.JFrame {
         apellidos3.setText("Heroe");
         datosUser3.add(apellidos3);
 
-        jComboBox2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        datosUser3.add(jComboBox2);
+        heroeEspecialidad.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        datosUser3.add(heroeEspecialidad);
 
         telefono2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         telefono2.setText("descripcion");
@@ -1413,7 +1515,7 @@ public class InterDioses extends javax.swing.JFrame {
 
         tituloCrearUser4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
         tituloCrearUser4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tituloCrearUser4.setText("Agregar usuario");
+        tituloCrearUser4.setText("Agregar Tarea");
         crearTareas.add(tituloCrearUser4, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
         datosUser4.setOpaque(false);
@@ -1779,6 +1881,58 @@ public class InterDioses extends javax.swing.JFrame {
         editarHeroes.setVisible(true);
     }//GEN-LAST:event_jButton24ActionPerformed
 
+    private void tablaAnimalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAnimalesMouseClicked
+        
+        DefaultTableModel model = (DefaultTableModel)tablaAnimales.getModel();
+        int pos = tablaAnimales.getSelectedRow();
+
+        editNombreAnimal.setText(model.getValueAt(pos, 1).toString());
+        editrazaAnimales.setText(model.getValueAt(pos, 2).toString());
+        editProcedenciaAnimales.setText(model.getValueAt(pos, 3).toString());
+
+    }//GEN-LAST:event_tablaAnimalesMouseClicked
+
+    private void tablaCuidadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCuidadosMouseClicked
+        DefaultTableModel model = (DefaultTableModel)tablaAnimales.getModel();
+        int pos = tablaCuidados.getSelectedRow();
+
+        try {
+            String consulta = "SELECT * FROM cuidado WHERE id="+model.getValueAt(pos, 0).toString();
+            Statement stmt;
+            stmt = (Statement) bd.createStatement();
+            ResultSet rs=stmt.executeQuery(consulta);
+            rs.next();
+            editNombreCuidado.setText(rs.getString(2));
+            editCuidadoDescripcion.setText(rs.getString(3));
+        } catch (SQLException ex) {
+            Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+
+        
+        
+    }//GEN-LAST:event_tablaCuidadosMouseClicked
+
+    private void tablaEspecialidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEspecialidadesMouseClicked
+        DefaultTableModel model = (DefaultTableModel)tablaEspecialidades.getModel();
+        int pos = tablaCuidados.getSelectedRow();
+
+        try {
+            String consulta = "SELECT usuarios.nombre, usuarios.apellido, FROM usuarios, heroes WHERE usuarios.id=heroes.id";
+            Statement stmt = (Statement) bd.createStatement();
+            ResultSet rs=stmt.executeQuery(consulta);
+            
+            while(rs.next()){
+                editHeroeEspecialidades.addItem(rs.getString(1) + " " + rs.getNString(2));
+            }
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_tablaEspecialidadesMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1872,6 +2026,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel fondoImagen;
     private javax.swing.JCheckBox heroe;
+    private javax.swing.JComboBox<String> heroeEspecialidad;
     private javax.swing.JComboBox<String> heroeTareas;
     private javax.swing.JTextField insertApellidos;
     private javax.swing.JTextField insertNombre;
@@ -1924,7 +2079,6 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JPanel jPanel1;
