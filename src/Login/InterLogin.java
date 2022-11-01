@@ -11,8 +11,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,6 +32,7 @@ public class InterLogin extends javax.swing.JFrame {
     //Conexion con la base de datos
     ConfBD conexion = new ConfBD ("localhost","3306","zoo","root","");
     Connection bd = conexion.makeConnect();
+    
     public InterLogin() {
         initComponents();
 //        ImageIcon fondo = new ImageIcon("img/Bosque.jpg");
@@ -51,6 +55,7 @@ public class InterLogin extends javax.swing.JFrame {
         pass = new javax.swing.JTextField();
         name = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        incorrecto = new javax.swing.JLabel();
         barraSuperior = new javax.swing.JPanel();
         atras = new javax.swing.JLabel();
         cerrar = new javax.swing.JLabel();
@@ -88,7 +93,7 @@ public class InterLogin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 150, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, 150, 40));
 
         pass.setBackground(new java.awt.Color(242, 242, 242));
         pass.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
@@ -114,6 +119,11 @@ public class InterLogin extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Clave de acceso -->");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 210, 40));
+
+        incorrecto.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        incorrecto.setForeground(new java.awt.Color(204, 0, 0));
+        incorrecto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(incorrecto, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 264, 310, 20));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 55, 630, 370));
 
@@ -216,50 +226,77 @@ public class InterLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_nameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String consulta= "SELECT * FROM usuarios";
-        String usuario = name.getText();
-        String passwd = pass.getText();
+        
+        String usuario = name.getText().trim();
+        String passwd = pass.getText().trim();
         
         try{
-
+            String consulta= "SELECT * FROM usuarios";
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             
             while(rs.next()) {
                 if (usuario.equalsIgnoreCase(rs.getString(2))){
                     try{
-                        System.out.println("Comprobando dios");
-                        System.out.println( rs.getString(2));
-                        System.out.println("passwd = " + passwd+"\nid = " +  rs.getString(1));
                         consulta = "SELECT * FROM dioses WHERE pass = '"+passwd+"' AND id = "+Integer.parseInt(rs.getString(1));
                         Statement stmt2 = (Statement) bd.createStatement();
                         ResultSet rs2=stmt2.executeQuery(consulta);
-                        rs2.next();
-                        System.out.println(rs2.getString(1));
-                        InterUsuarios.InterDioses interDioses = new InterUsuarios.InterDioses(rs.getString("nombre")+" "+rs.getString("apellido"));
-                        this.setVisible(false);
-                        interDioses.setVisible(true);
-                        
-                        
-                    }catch(SQLException sqle2){
-                        try{
-                            System.out.println("Comprobando heroe");
-                            System.out.println( rs.getString(2));
-                            System.out.println("passwd = " + passwd+"\nid = " +  rs.getString(1));
-                            consulta = "SELECT * FROM heroes WHERE pass = '"+passwd+"' AND id = "+Integer.parseInt(rs.getString(1));
-                            Statement stmt2 = (Statement) bd.createStatement();
-                            ResultSet rs2=stmt2.executeQuery(consulta);
-                            rs2.next();
-                            System.out.println(rs2.getString(1));
-                            InterUsuarios.InterHeroes interheroes = new InterHeroes(rs.getString("nombre")+" "+rs.getString("apellido"), rs.getString(2));
-                            this.setVisible(false);
-                            interheroes.setVisible(true);
+                        rs2.next(); 
+                        //System.out.println(rs2.getString(1));
 
-                        }catch(SQLException sqle3){
-                            JOptionPane.showMessageDialog(null,"Usuario o contraseña incorrectos");
+                        if (rs2.first()){
+                            InterUsuarios.InterDioses interDioses = new InterUsuarios.InterDioses(rs.getString("nombre"));
+                            this.setVisible(false);
+                            interDioses.setVisible(true);
+                        }else{
+                            try{
+                                consulta = "SELECT * FROM heroes WHERE pass = '"+passwd+"' AND id = "+Integer.parseInt(rs.getString(1));
+                                 stmt2 = (Statement) bd.createStatement();
+                                 rs2=stmt2.executeQuery(consulta);
+                                rs2.next();
+                                //System.out.println(rs2.getString(1));
+                                if(rs2.first()){
+                                    InterUsuarios.InterHeroes interheroes = new InterHeroes(rs.getString("nombre"), rs.getString(2));
+                                    this.setVisible(false);
+
+                                    try {
+                                        consulta = "SELECT * FROM usuarios where usuario='"+ rs.getString("nombre") +"'";
+                                        stmt = (Statement) bd.createStatement();
+                                        rs=stmt.executeQuery(consulta);
+                                        rs.next();
+
+                                        consulta = "SELECT usuarios.id, usuarios.usuario, tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre FROM usuarios, tareas, cuidado,animales where usuarios.id="+Integer.parseInt(rs.getString(1))+" AND tareas.id_heroe="+Integer.parseInt(rs.getString(1))+" AND tareas.id_cuidado = cuidado.id AND tareas.id_animal = animales.id AND tareas.finalicazo=0";
+                                        stmt2 = (Statement) bd.createStatement();
+                                        rs2=stmt2.executeQuery(consulta);
+
+                                         DefaultTableModel model = (DefaultTableModel)interheroes.tabla.getModel();
+
+                                        while(rs2.next()){
+                                            Object [] row ={rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7)}; // Rellenar la fila con los datos correspondientes
+                                            model.addRow(row); // Añadir la fila a la tabla
+                                        }
+
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    interheroes.setVisible(true);
+                                }else{
+                                     //JOptionPane.showMessageDialog(null,"Usuario o contraseña incorrectos");
+                                     incorrecto.setText("Usuario y/o clave incorrectos");
+                                }
+                                
+                            }catch(SQLException sqle){
+                                System.out.println("Error en la ejecución:" + sqle.getErrorCode() + " " + sqle.getMessage());  
+                            }
                         }
+                    }catch(SQLException sqle){
+                        System.out.println("Error en la ejecución:" + sqle.getErrorCode() + " " + sqle.getMessage());   
                     }
-                } 
+                    
+                } else{
+                    //JOptionPane.showMessageDialog(null,"Usuario o contraseña incorrectos");
+                    incorrecto.setText("Usuario y/o clave incorrectos");
+                }
             }
         } catch (SQLException sqle) { 
           System.out.println("Error en la ejecución:" + sqle.getErrorCode() + " " + sqle.getMessage());    
@@ -298,6 +335,7 @@ public class InterLogin extends javax.swing.JFrame {
     private javax.swing.JLabel atras;
     private javax.swing.JPanel barraSuperior;
     private javax.swing.JLabel cerrar;
+    private javax.swing.JLabel incorrecto;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

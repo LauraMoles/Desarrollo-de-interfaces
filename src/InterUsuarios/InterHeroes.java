@@ -48,10 +48,10 @@ public class InterHeroes extends javax.swing.JFrame {
         
         
     }
-    
     public void cargarTareas(){
-         try {
-            String consulta = "SELECT * FROM usuarios where usuario='"+ nameUser+"'";
+        try {
+            String consulta = "SELECT * FROM usuarios where usuario='"+ nombreHeroe+"'";
+            
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             rs.next();
@@ -59,18 +59,19 @@ public class InterHeroes extends javax.swing.JFrame {
             consulta = "SELECT usuarios.id, usuarios.usuario, tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre FROM usuarios, tareas, cuidado,animales where usuarios.id="+Integer.parseInt(rs.getString(1))+" AND tareas.id_heroe="+Integer.parseInt(rs.getString(1))+" AND tareas.id_cuidado = cuidado.id AND tareas.id_animal = animales.id AND tareas.finalicazo=0";
             Statement stmt2 = (Statement) bd.createStatement();
             ResultSet rs2=stmt2.executeQuery(consulta);
-            
+
              DefaultTableModel model = (DefaultTableModel)tabla.getModel();
 
             while(rs2.next()){
                 Object [] row ={rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
-             
+
         } catch (SQLException ex) {
             Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -80,7 +81,6 @@ public class InterHeroes extends javax.swing.JFrame {
         cerrar = new javax.swing.JLabel();
         cerrar1 = new javax.swing.JLabel();
         fondo = new javax.swing.JPanel();
-        cargar = new javax.swing.JButton();
         atras = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
@@ -163,27 +163,21 @@ public class InterHeroes extends javax.swing.JFrame {
 
         fondo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cargar.setText("Cargar Tareas");
-        cargar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cargarActionPerformed(evt);
-            }
-        });
-        fondo.add(cargar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 480, -1, -1));
-
         atras.setText("Atras");
         atras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 atrasActionPerformed(evt);
             }
         });
-        fondo.add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, -1, -1));
+        fondo.add(atras, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, 520, -1));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         titulo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
 
         panelTabla.setBackground(new java.awt.Color(255, 255, 255));
+        panelTabla.setOpaque(false);
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,6 +195,11 @@ public class InterHeroes extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabla.setGridColor(new java.awt.Color(0, 153, 153));
+        tabla.setOpaque(false);
+        tabla.setRowMargin(2);
+        tabla.setSelectionBackground(new java.awt.Color(0, 153, 102));
+        tabla.setShowVerticalLines(false);
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaMouseClicked(evt);
@@ -312,11 +311,6 @@ public class InterHeroes extends javax.swing.JFrame {
         seleccion.setVisible(true);
     }//GEN-LAST:event_cerrarSesionMouseClicked
 
-    private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
-       this.cargarTareas();
-       this.cargar.setVisible(false);
-    }//GEN-LAST:event_cargarActionPerformed
-
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         pos = -5;
         DefaultTableModel model = (DefaultTableModel)tabla.getModel();
@@ -359,7 +353,6 @@ public class InterHeroes extends javax.swing.JFrame {
                 String consulta = "UPDATE `tareas` SET `finalicazo` = 1 WHERE tareas.id ="+model.getValueAt(pos, 0);
                 Statement stmt = (Statement) bd.createStatement();
                 stmt.execute(consulta);
-                this.cargar.setVisible(false);
 
             } catch (SQLException ex) {
                 Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
@@ -420,7 +413,6 @@ public class InterHeroes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton atras;
     private javax.swing.JPanel barraSuperior;
-    private javax.swing.JButton cargar;
     private javax.swing.JLabel cerrar;
     private javax.swing.JLabel cerrar1;
     private javax.swing.JTextArea descripcionAnimal;
@@ -432,18 +424,12 @@ public class InterHeroes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel nombreAnimal;
     private javax.swing.JLabel nombreCuidado;
     private javax.swing.JPanel panelInformacio;
     private javax.swing.JPanel panelTabla;
-    private javax.swing.JPanel panelTabla1;
-    private javax.swing.JPanel panelTabla2;
-    private javax.swing.JTable tabla;
-    private javax.swing.JTable tabla1;
-    private javax.swing.JTable tabla2;
+    public javax.swing.JTable tabla;
     private javax.swing.JCheckBox termiando;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

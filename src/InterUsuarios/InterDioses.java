@@ -10,10 +10,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 
 /**
@@ -33,7 +36,7 @@ public class InterDioses extends javax.swing.JFrame {
         initComponents();
         titulo.setText("Dios: "+nombreDios);
         volver.setVisible(false);
-        crearUser.setVisible(false);
+        crearPassUser.setVisible(false);
         crearCuidados.setVisible(false);
         crearAnimales.setVisible(false);
         crearTareas.setVisible(false);
@@ -45,6 +48,8 @@ public class InterDioses extends javax.swing.JFrame {
         editarUsuarios.setVisible(false);
         editarDioses.setVisible(false);
         editarHeroes.setVisible(false);
+        crearUser.setVisible(false);
+        this.cargarDatos();
          
         
     }
@@ -62,7 +67,7 @@ public class InterDioses extends javax.swing.JFrame {
             
             //Ocultar interfaces secundarias
             volver.setVisible(false);
-            crearUser.setVisible(false);
+            crearPassUser.setVisible(false);
             crearCuidados.setVisible(false);
             crearAnimales.setVisible(false);
             crearTareas.setVisible(false);
@@ -74,84 +79,266 @@ public class InterDioses extends javax.swing.JFrame {
             editarUsuarios.setVisible(false);
             editarDioses.setVisible(false);
             editarHeroes.setVisible(false);
+            crearUser.setVisible(false);
+
+            this.cargarDatos();
             
-            
-            //rellenar los JCombo box
-            
+//            //rellenar los JCombo box
+//            
+//            
+//        try {
+//            consulta = "SELECT * FROM cuidado";
+//            stmt = (Statement) bd.createStatement();
+//            rs=stmt.executeQuery(consulta);
+//            
+//            while(rs.next()){
+//                cuidadoTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
+//                editTareasCuidado.addItem(rs.getString(1)+"-"+rs.getNString(2));
+//                
+//            }
+//            
+//            consulta = "SELECT * FROM animales";
+//            stmt = (Statement) bd.createStatement();
+//            rs=stmt.executeQuery(consulta);
+//            
+//            while(rs.next()){
+//                AnimalTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
+//                EditTareasAnimal.addItem(rs.getString(1)+"-"+rs.getNString(2));
+//            }
+//            
+//            consulta = "SELECT usuarios.id, usuarios.nombre FROM usuarios, heroes WHERE usuarios.id=heroes.id";
+//            stmt = (Statement) bd.createStatement();
+//            rs=stmt.executeQuery(consulta);
+//            
+//            while(rs.next()){
+//                heroeTareas.addItem(rs.getString(1)+"-"+rs.getString(2));
+//                heroeEspecialidad.addItem(rs.getString(1)+"-"+rs.getString(2));
+//                editTareasHeroe.addItem(rs.getString(1)+"-"+rs.getString(2));
+//            }
+//            
+//
+//            //tablaAnimales
+//             consulta = "SELECT * FROM animales";
+//             stmt = (Statement) bd.createStatement();
+//             rs=stmt.executeQuery(consulta);
+//            
+//             model = (DefaultTableModel)tablaAnimales.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            
+//            //tablaCuidados
+//             consulta = "SELECT * FROM especialidades";
+//             stmt = (Statement) bd.createStatement();
+//             rs=stmt.executeQuery(consulta);
+//            
+//             model = (DefaultTableModel)tablaCuidados.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            //tablaUsuarios
+//             consulta = "SELECT * FROM usuarios";
+//             stmt = (Statement) bd.createStatement();
+//             rs=stmt.executeQuery(consulta);
+//            
+//             model = (DefaultTableModel)tablaUsuarios.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            //tablaHeroes
+//             consulta = "SELECT heroes.id,usuarios.nombre, usuarios.usuario FROM heroes, usuarios WHERE usuarios.id=heroes.id";
+//             stmt = (Statement) bd.createStatement();
+//             rs=stmt.executeQuery(consulta);
+//            
+//             model = (DefaultTableModel)tablaHeroes.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            //tablaDioses
+//             consulta = "SELECT dioses.id,usuarios.nombre, usuarios.usuario FROM dioses, usuarios WHERE usuarios.id=dioses.id";
+//             stmt = (Statement) bd.createStatement();
+//             rs=stmt.executeQuery(consulta);
+//            
+//             model = (DefaultTableModel)tablaDioses.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            
+//            //tablaEspecialidades
+//            consulta = "SELECT especialidades.id, especialidades.nombre, usuarios.nombre FROM especialidades, heroes, usuarios where especialidades.id_heroe= heroes.id and usuarios.id = heroes.id";
+//            stmt = (Statement) bd.createStatement();
+//            rs=stmt.executeQuery(consulta);
+//            
+//            model = (DefaultTableModel)tablaEspecialidades.getModel();
+//
+//            while(rs.next()){
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//            //tablaTareas
+//            consulta = "SELECT tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre, usuarios.nombre,tareas.finalicazo FROM tareas,cuidado,animales,usuarios,heroes WHERE usuarios.id=heroes.id AND tareas.id_cuidado=cuidado.id AND tareas.id_animal = animales.id AND tareas.id_heroe= heroes.id";
+//            stmt = (Statement) bd.createStatement();
+//            rs=stmt.executeQuery(consulta);
+//            String finalizado;
+//            
+//            model = (DefaultTableModel)tablaTareas.getModel();
+//
+//            while(rs.next()){
+//                if (rs.getString(7).equalsIgnoreCase("0")){
+//                    finalizado="No";
+//                }else{
+//                    finalizado="Si";
+//                }
+//                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),finalizado}; // Rellenar la fila con los datos correspondientes
+//                model.addRow(row); // Añadir la fila a la tabla
+//            }
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+
+    public void cargarDatos(){
         try {
+            String consulta;
+            Statement stmt;
+            ResultSet rs;
+            DefaultTableModel model;
+            
+            //rellenar los JCombo box cuidados
             consulta = "SELECT * FROM cuidado";
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
-            
+
             while(rs.next()){
-                cuidadoTareas.addItem(rs.getNString(2));
+                cuidadoTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
+                editTareasCuidado.addItem(rs.getString(1)+"-"+rs.getNString(2));
+
             }
-            
+            //rellenar los JCombo box animales
             consulta = "SELECT * FROM animales";
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
-            
+
             while(rs.next()){
-                AnimalTareas.addItem(rs.getNString(2));
+                AnimalTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
+                EditTareasAnimal.addItem(rs.getString(1)+"-"+rs.getNString(2));
             }
-            
-            consulta = "SELECT usuarios.nombre, usuarios.apellido FROM usuarios, heroes WHERE usuarios.id=heroes.id";
+
+            //rellenar los JCombo box heroes
+            consulta = "SELECT usuarios.id, usuarios.nombre FROM usuarios, heroes WHERE usuarios.id=heroes.id";
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
-            
+
             while(rs.next()){
-                heroeTareas.addItem(rs.getString(1) + " " + rs.getNString(2));
-                heroeEspecialidad.addItem(rs.getString(1) + " " + rs.getNString(2));
+                heroeTareas.addItem(rs.getString(1)+"-"+rs.getString(2));
+                heroeEspecialidad.addItem(rs.getString(1)+"-"+rs.getString(2));
+                editTareasHeroe.addItem(rs.getString(1)+"-"+rs.getString(2));
             }
-            
-            
-            
-            
+
+
             //tablaAnimales
              consulta = "SELECT * FROM animales";
              stmt = (Statement) bd.createStatement();
              rs=stmt.executeQuery(consulta);
-            
+
              model = (DefaultTableModel)tablaAnimales.getModel();
 
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
-            
+
             //tablaCuidados
              consulta = "SELECT * FROM especialidades";
              stmt = (Statement) bd.createStatement();
              rs=stmt.executeQuery(consulta);
-            
+
              model = (DefaultTableModel)tablaCuidados.getModel();
 
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
-            
-            //tablaEspecialidades
-            consulta = "SELECT especialidades.id, especialidades.nombre, usuarios.nombre FROM especialidades, heroes, usuarios where especialidades.id_heroe= heroes.id and usuarios.id = heroes.id";
-            stmt = (Statement) bd.createStatement();
-            rs=stmt.executeQuery(consulta);
-            
-            model = (DefaultTableModel)tablaEspecialidades.getModel();
+            //tablaUsuarios
+             consulta = "SELECT * FROM usuarios";
+             stmt = (Statement) bd.createStatement();
+             rs=stmt.executeQuery(consulta);
+
+             model = (DefaultTableModel)tablaUsuarios.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+            //tablaHeroes
+             consulta = "SELECT heroes.id,usuarios.nombre, usuarios.usuario FROM heroes, usuarios WHERE usuarios.id=heroes.id";
+             stmt = (Statement) bd.createStatement();
+             rs=stmt.executeQuery(consulta);
+
+             model = (DefaultTableModel)tablaHeroes.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+            //tablaDioses
+             consulta = "SELECT dioses.id,usuarios.nombre, usuarios.usuario FROM dioses, usuarios WHERE usuarios.id=dioses.id";
+             stmt = (Statement) bd.createStatement();
+             rs=stmt.executeQuery(consulta);
+
+             model = (DefaultTableModel)tablaDioses.getModel();
 
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
 
+            //tablaEspecialidades
+            consulta = "SELECT especialidades.id, especialidades.nombre, usuarios.nombre FROM especialidades, heroes, usuarios where especialidades.id_heroe= heroes.id and usuarios.id = heroes.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+
+            model = (DefaultTableModel)tablaEspecialidades.getModel();
+
+            while(rs.next()){
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+            //tablaTareas
+            consulta = "SELECT tareas.id, tareas.fecha_creacion, tareas.fecha_realizacion, cuidado.nombre, animales.nombre, usuarios.nombre,tareas.finalicazo FROM tareas,cuidado,animales,usuarios,heroes WHERE usuarios.id=heroes.id AND tareas.id_cuidado=cuidado.id AND tareas.id_animal = animales.id AND tareas.id_heroe= heroes.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            String finalizado;
+
+            model = (DefaultTableModel)tablaTareas.getModel();
+
+            while(rs.next()){
+                if (rs.getString(7).equalsIgnoreCase("0")){
+                    finalizado="No";
+                }else{
+                    finalizado="Si";
+                }
+                Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),finalizado}; // Rellenar la fila con los datos correspondientes
+                model.addRow(row); // Añadir la fila a la tabla
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
- 
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -161,6 +348,8 @@ public class InterDioses extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        finalizado = new javax.swing.ButtonGroup();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         barraSuperior = new javax.swing.JPanel();
         cerrar = new javax.swing.JLabel();
         cerrar1 = new javax.swing.JLabel();
@@ -169,27 +358,26 @@ public class InterDioses extends javax.swing.JFrame {
         volver = new javax.swing.JButton();
         botones = new javax.swing.JPanel();
         agregar = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        agregarAnimalesBoton = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
         agregarUsers = new javax.swing.JButton();
         editar = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        editarAnimalesBoton = new javax.swing.JButton();
+        editarCuidadosBoton = new javax.swing.JButton();
+        editarEspecialidadesBoton = new javax.swing.JButton();
+        editarTareasBoton = new javax.swing.JButton();
+        editarUsuariosBoton = new javax.swing.JButton();
         cambiarPass = new javax.swing.JPanel();
-        jButton22 = new javax.swing.JButton();
-        jButton24 = new javax.swing.JButton();
+        editarDiosesBoton = new javax.swing.JButton();
+        editarHeroesBoton = new javax.swing.JButton();
         editarCuidado = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaCuidados = new javax.swing.JTable();
         jButton18 = new javax.swing.JButton();
         jButton19 = new javax.swing.JButton();
         tituloCrearUser9 = new javax.swing.JLabel();
-        insertNombreAnimal3 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         tituloCrearUser10 = new javax.swing.JLabel();
         editNombreCuidado = new javax.swing.JTextField();
@@ -203,7 +391,6 @@ public class InterDioses extends javax.swing.JFrame {
         jButton21 = new javax.swing.JButton();
         jButton23 = new javax.swing.JButton();
         tituloCrearUser11 = new javax.swing.JLabel();
-        insertNombreAnimal4 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         tituloCrearUser13 = new javax.swing.JLabel();
         editNombreEspecialidades = new javax.swing.JTextField();
@@ -219,51 +406,46 @@ public class InterDioses extends javax.swing.JFrame {
         jButton26 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         tituloCrearUser16 = new javax.swing.JLabel();
-        insertNombreAnimal5 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         tituloCrearUser17 = new javax.swing.JLabel();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        editFechaInico = new org.jdesktop.swingx.JXDatePicker();
         tituloCrearUser18 = new javax.swing.JLabel();
-        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
+        editFechaFinal = new org.jdesktop.swingx.JXDatePicker();
         tituloCrearUser19 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        editTareasCuidado = new javax.swing.JComboBox<>();
         tituloCrearUser20 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        EditTareasAnimal = new javax.swing.JComboBox<>();
         tituloCrearUser21 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        editTareasHeroe = new javax.swing.JComboBox<>();
         jButton28 = new javax.swing.JButton();
         tituloCrearUser22 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        finlizadoSI = new javax.swing.JRadioButton();
+        finalizadoNO = new javax.swing.JRadioButton();
         editarUsuarios = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         tablaUsuarios = new javax.swing.JTable();
         jButton29 = new javax.swing.JButton();
         jButton30 = new javax.swing.JButton();
         tituloCrearUser23 = new javax.swing.JLabel();
-        insertNombreAnimal6 = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         tituloCrearUser24 = new javax.swing.JLabel();
         editNombreUsuario = new javax.swing.JTextField();
-        tituloCrearUser25 = new javax.swing.JLabel();
-        editapellidosUsuario = new javax.swing.JTextField();
         tituloCrearUser26 = new javax.swing.JLabel();
         editnombreNick = new javax.swing.JTextField();
         tituloCrearUser27 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        editTelefonoUser = new javax.swing.JTextField();
         jButton31 = new javax.swing.JButton();
         editarHeroes = new javax.swing.JPanel();
         jScrollPane11 = new javax.swing.JScrollPane();
         tablaHeroes = new javax.swing.JTable();
         jButton35 = new javax.swing.JButton();
         tituloCrearUser33 = new javax.swing.JLabel();
-        insertNombreAnimal8 = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         tituloCrearUser34 = new javax.swing.JLabel();
         tituloCrearUser35 = new javax.swing.JLabel();
-        editPassActualDioses1 = new javax.swing.JTextField();
+        editPassActualHeroes = new javax.swing.JTextField();
         tituloCrearUser36 = new javax.swing.JLabel();
-        editPassNuevaDioses1 = new javax.swing.JTextField();
+        editPassNuevaHeroes = new javax.swing.JTextField();
         tituloCrearUser37 = new javax.swing.JLabel();
         quitarPrivilegiosDioses1 = new javax.swing.JButton();
         jButton36 = new javax.swing.JButton();
@@ -272,7 +454,6 @@ public class InterDioses extends javax.swing.JFrame {
         tablaDioses = new javax.swing.JTable();
         jButton32 = new javax.swing.JButton();
         tituloCrearUser28 = new javax.swing.JLabel();
-        insertNombreAnimal7 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         tituloCrearUser29 = new javax.swing.JLabel();
         tituloCrearUser32 = new javax.swing.JLabel();
@@ -288,7 +469,6 @@ public class InterDioses extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         tituloCrearUser6 = new javax.swing.JLabel();
-        insertNombreAnimal2 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         tituloCrearUser5 = new javax.swing.JLabel();
         editNombreAnimal = new javax.swing.JTextField();
@@ -301,11 +481,11 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser2 = new javax.swing.JLabel();
         datosUser2 = new javax.swing.JPanel();
         nombre2 = new javax.swing.JLabel();
-        insertNombreAnimal1 = new javax.swing.JTextField();
+        insertNombreCuidado = new javax.swing.JTextField();
         apellidos2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         descripcionCuidado = new javax.swing.JTextArea();
-        jButton7 = new javax.swing.JButton();
+        crearCuidadoNuevo = new javax.swing.JButton();
         crearAnimales = new javax.swing.JPanel();
         tituloCrearUser1 = new javax.swing.JLabel();
         datosUser1 = new javax.swing.JPanel();
@@ -315,7 +495,7 @@ public class InterDioses extends javax.swing.JFrame {
         razaAnimal = new javax.swing.JTextField();
         telefono1 = new javax.swing.JLabel();
         procedenciaAnimal = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
+        crearAnimalNuevo = new javax.swing.JButton();
         crearEspecialidad = new javax.swing.JPanel();
         tituloCrearUser3 = new javax.swing.JLabel();
         datosUser3 = new javax.swing.JPanel();
@@ -324,7 +504,7 @@ public class InterDioses extends javax.swing.JFrame {
         apellidos3 = new javax.swing.JLabel();
         heroeEspecialidad = new javax.swing.JComboBox<>();
         telefono2 = new javax.swing.JLabel();
-        jButton12 = new javax.swing.JButton();
+        crearEspecialidadNueva = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         descripcionEspecialidad = new javax.swing.JTextArea();
         crearTareas = new javax.swing.JPanel();
@@ -342,20 +522,27 @@ public class InterDioses extends javax.swing.JFrame {
         heroeTareas = new javax.swing.JComboBox<>();
         jButton13 = new javax.swing.JButton();
         crearUser = new javax.swing.JPanel();
+        tituloCrearUser25 = new javax.swing.JLabel();
+        datosUser5 = new javax.swing.JPanel();
+        nombre5 = new javax.swing.JLabel();
+        insertNombre1 = new javax.swing.JTextField();
+        telefono4 = new javax.swing.JLabel();
+        numTel1 = new javax.swing.JTextField();
+        nikname1 = new javax.swing.JLabel();
+        insertnik1 = new javax.swing.JTextField();
+        jButton33 = new javax.swing.JButton();
+        dios1 = new javax.swing.JCheckBox();
+        heroe1 = new javax.swing.JCheckBox();
+        visitante1 = new javax.swing.JCheckBox();
+        crearPassUser = new javax.swing.JPanel();
         tituloCrearUser = new javax.swing.JLabel();
         datosUser = new javax.swing.JPanel();
         nombre = new javax.swing.JLabel();
-        insertNombre = new javax.swing.JTextField();
-        apellidos = new javax.swing.JLabel();
-        insertApellidos = new javax.swing.JTextField();
+        insertPassUser = new javax.swing.JTextField();
         telefono = new javax.swing.JLabel();
-        numTel = new javax.swing.JTextField();
+        confirmacionPass = new javax.swing.JTextField();
         nikname = new javax.swing.JLabel();
-        insertnik = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
-        dios = new javax.swing.JCheckBox();
-        heroe = new javax.swing.JCheckBox();
-        visitante = new javax.swing.JCheckBox();
         fondoImagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -447,19 +634,19 @@ public class InterDioses extends javax.swing.JFrame {
         agregar.setBackground(new java.awt.Color(255, 255, 255));
         agregar.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
 
-        jButton2.setBackground(new java.awt.Color(216, 178, 142));
-        jButton2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton2.setText("agregar Animales");
-        jButton2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton2.setBorderPainted(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setFocusPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        agregarAnimalesBoton.setBackground(new java.awt.Color(216, 178, 142));
+        agregarAnimalesBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        agregarAnimalesBoton.setText("agregar Animales");
+        agregarAnimalesBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        agregarAnimalesBoton.setBorderPainted(false);
+        agregarAnimalesBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        agregarAnimalesBoton.setFocusPainted(false);
+        agregarAnimalesBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                agregarAnimalesBotonActionPerformed(evt);
             }
         });
-        agregar.add(jButton2);
+        agregar.add(agregarAnimalesBoton);
 
         jButton14.setBackground(new java.awt.Color(216, 178, 142));
         jButton14.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
@@ -522,108 +709,108 @@ public class InterDioses extends javax.swing.JFrame {
         editar.setBackground(new java.awt.Color(255, 255, 255));
         editar.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
 
-        jButton1.setBackground(new java.awt.Color(216, 178, 142));
-        jButton1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton1.setText("Editar Animales");
-        jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton1.setBorderPainted(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        editarAnimalesBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarAnimalesBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarAnimalesBoton.setText("Editar Animales");
+        editarAnimalesBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarAnimalesBoton.setBorderPainted(false);
+        editarAnimalesBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarAnimalesBoton.setFocusPainted(false);
+        editarAnimalesBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                editarAnimalesBotonActionPerformed(evt);
             }
         });
-        editar.add(jButton1);
+        editar.add(editarAnimalesBoton);
 
-        jButton8.setBackground(new java.awt.Color(216, 178, 142));
-        jButton8.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton8.setText("Editar cuidados");
-        jButton8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton8.setBorderPainted(false);
-        jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton8.setFocusPainted(false);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        editarCuidadosBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarCuidadosBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarCuidadosBoton.setText("Editar cuidados");
+        editarCuidadosBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarCuidadosBoton.setBorderPainted(false);
+        editarCuidadosBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarCuidadosBoton.setFocusPainted(false);
+        editarCuidadosBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                editarCuidadosBotonActionPerformed(evt);
             }
         });
-        editar.add(jButton8);
+        editar.add(editarCuidadosBoton);
 
-        jButton9.setBackground(new java.awt.Color(216, 178, 142));
-        jButton9.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton9.setText("Editar especialidades");
-        jButton9.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton9.setBorderPainted(false);
-        jButton9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton9.setFocusPainted(false);
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        editarEspecialidadesBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarEspecialidadesBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarEspecialidadesBoton.setText("Editar especialidades");
+        editarEspecialidadesBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarEspecialidadesBoton.setBorderPainted(false);
+        editarEspecialidadesBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarEspecialidadesBoton.setFocusPainted(false);
+        editarEspecialidadesBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                editarEspecialidadesBotonActionPerformed(evt);
             }
         });
-        editar.add(jButton9);
+        editar.add(editarEspecialidadesBoton);
 
-        jButton10.setBackground(new java.awt.Color(216, 178, 142));
-        jButton10.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton10.setText("editar tAREAS");
-        jButton10.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton10.setBorderPainted(false);
-        jButton10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton10.setFocusPainted(false);
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        editarTareasBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarTareasBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarTareasBoton.setText("editar tAREAS");
+        editarTareasBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarTareasBoton.setBorderPainted(false);
+        editarTareasBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarTareasBoton.setFocusPainted(false);
+        editarTareasBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                editarTareasBotonActionPerformed(evt);
             }
         });
-        editar.add(jButton10);
+        editar.add(editarTareasBoton);
 
-        jButton11.setBackground(new java.awt.Color(216, 178, 142));
-        jButton11.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton11.setText("Editar USUARIOS");
-        jButton11.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton11.setBorderPainted(false);
-        jButton11.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton11.setFocusPainted(false);
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
+        editarUsuariosBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarUsuariosBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarUsuariosBoton.setText("Editar USUARIOS");
+        editarUsuariosBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarUsuariosBoton.setBorderPainted(false);
+        editarUsuariosBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarUsuariosBoton.setFocusPainted(false);
+        editarUsuariosBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
+                editarUsuariosBotonActionPerformed(evt);
             }
         });
-        editar.add(jButton11);
+        editar.add(editarUsuariosBoton);
 
         botones.add(editar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 300, 230));
 
         cambiarPass.setBackground(new java.awt.Color(255, 255, 255));
         cambiarPass.setLayout(new java.awt.GridLayout(0, 1, 0, 3));
 
-        jButton22.setBackground(new java.awt.Color(216, 178, 142));
-        jButton22.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton22.setText("Editar dioses");
-        jButton22.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton22.setBorderPainted(false);
-        jButton22.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton22.setFocusPainted(false);
-        jButton22.addActionListener(new java.awt.event.ActionListener() {
+        editarDiosesBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarDiosesBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarDiosesBoton.setText("Editar dioses");
+        editarDiosesBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarDiosesBoton.setBorderPainted(false);
+        editarDiosesBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarDiosesBoton.setFocusPainted(false);
+        editarDiosesBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton22ActionPerformed(evt);
+                editarDiosesBotonActionPerformed(evt);
             }
         });
-        cambiarPass.add(jButton22);
+        cambiarPass.add(editarDiosesBoton);
 
-        jButton24.setBackground(new java.awt.Color(216, 178, 142));
-        jButton24.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton24.setText("editar heroes");
-        jButton24.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
-        jButton24.setBorderPainted(false);
-        jButton24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton24.setFocusPainted(false);
-        jButton24.addActionListener(new java.awt.event.ActionListener() {
+        editarHeroesBoton.setBackground(new java.awt.Color(216, 178, 142));
+        editarHeroesBoton.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editarHeroesBoton.setText("editar heroes");
+        editarHeroesBoton.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 0, 0)));
+        editarHeroesBoton.setBorderPainted(false);
+        editarHeroesBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editarHeroesBoton.setFocusPainted(false);
+        editarHeroesBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton24ActionPerformed(evt);
+                editarHeroesBotonActionPerformed(evt);
             }
         });
-        cambiarPass.add(jButton24);
+        cambiarPass.add(editarHeroesBoton);
 
         botones.add(cambiarPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 610, 60));
 
@@ -675,15 +862,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser9.setText("Editar cuidados");
         editarCuidado.add(tituloCrearUser9, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal3.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal3.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal3ActionPerformed(evt);
-            }
-        });
-        editarCuidado.add(insertNombreAnimal3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -693,11 +871,6 @@ public class InterDioses extends javax.swing.JFrame {
 
         editNombreCuidado.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editNombreCuidado.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editNombreCuidado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editNombreCuidadoActionPerformed(evt);
-            }
-        });
         jPanel2.add(editNombreCuidado);
 
         tituloCrearUser12.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
@@ -769,15 +942,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser11.setText("Editar especialidades");
         editarEspecialidades.add(tituloCrearUser11, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal4ActionPerformed(evt);
-            }
-        });
-        editarEspecialidades.add(insertNombreAnimal4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -787,11 +951,6 @@ public class InterDioses extends javax.swing.JFrame {
 
         editNombreEspecialidades.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editNombreEspecialidades.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editNombreEspecialidades.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editNombreEspecialidadesActionPerformed(evt);
-            }
-        });
         jPanel3.add(editNombreEspecialidades);
 
         tituloCrearUser14.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
@@ -833,7 +992,7 @@ public class InterDioses extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Inicio", "Finalizacion", "Cuidado", "Animal", "Heroe", "Finalizacion"
+                "Id", "Fecha inicio", "Fecha finalizacion", "Cuidado", "Animal", "Heroe", "Finalizacion"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -844,9 +1003,14 @@ public class InterDioses extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaTareas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaTareasMouseClicked(evt);
+            }
+        });
         jScrollPane8.setViewportView(tablaTareas);
 
-        editarTareas.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 55, 630, 90));
+        editarTareas.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 630, 90));
 
         jButton26.setBackground(new java.awt.Color(219, 197, 170));
         jButton26.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
@@ -865,51 +1029,45 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser16.setText("Editar tareas");
         editarTareas.add(tituloCrearUser16, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal5.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal5.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal5ActionPerformed(evt);
-            }
-        });
-        editarTareas.add(insertNombreAnimal5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(0, 4, 10, 5));
 
         tituloCrearUser17.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser17.setText("fecha Inicio");
         jPanel4.add(tituloCrearUser17);
-        jPanel4.add(jXDatePicker1);
+
+        editFechaInico.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        editFechaInico.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
+        jPanel4.add(editFechaInico);
 
         tituloCrearUser18.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser18.setText("fecha finalizacion");
         jPanel4.add(tituloCrearUser18);
-        jPanel4.add(jXDatePicker2);
+
+        editFechaFinal.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        editFechaFinal.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
+        jPanel4.add(editFechaFinal);
 
         tituloCrearUser19.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser19.setText("cuidado");
         jPanel4.add(tituloCrearUser19);
 
-        jComboBox1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(jComboBox1);
+        editTareasCuidado.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        jPanel4.add(editTareasCuidado);
 
         tituloCrearUser20.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser20.setText("animal");
         jPanel4.add(tituloCrearUser20);
 
-        jComboBox3.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(jComboBox3);
+        EditTareasAnimal.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        jPanel4.add(EditTareasAnimal);
 
         tituloCrearUser21.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser21.setText("heroe");
         jPanel4.add(tituloCrearUser21);
 
-        jComboBox4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel4.add(jComboBox4);
+        editTareasHeroe.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        jPanel4.add(editTareasHeroe);
 
         editarTareas.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 630, 120));
 
@@ -922,15 +1080,17 @@ public class InterDioses extends javax.swing.JFrame {
 
         tituloCrearUser22.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser22.setText("finalizado");
-        editarTareas.add(tituloCrearUser22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 157, 30));
+        editarTareas.add(tituloCrearUser22, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 290, 100, 30));
 
-        jCheckBox1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jCheckBox1.setText("Si");
-        editarTareas.add(jCheckBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 50, 40));
+        finalizado.add(finlizadoSI);
+        finlizadoSI.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        finlizadoSI.setText("Si");
+        editarTareas.add(finlizadoSI, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, -1, -1));
 
-        jCheckBox2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jCheckBox2.setText("No");
-        editarTareas.add(jCheckBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 60, 40));
+        finalizado.add(finalizadoNO);
+        finalizadoNO.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        finalizadoNO.setText("no");
+        editarTareas.add(finalizadoNO, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 290, -1, -1));
 
         fondo.add(editarTareas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -943,15 +1103,20 @@ public class InterDioses extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Nombre", "Apellidos", "Telefono", "Usuario"
+                "Id", "Nombre", "Telefono", "Usuario"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tablaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaUsuariosMouseClicked(evt);
             }
         });
         jScrollPane9.setViewportView(tablaUsuarios);
@@ -975,15 +1140,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser23.setText("Editar usuarios");
         editarUsuarios.add(tituloCrearUser23, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal6.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal6ActionPerformed(evt);
-            }
-        });
-        editarUsuarios.add(insertNombreAnimal6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -993,25 +1149,7 @@ public class InterDioses extends javax.swing.JFrame {
 
         editNombreUsuario.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editNombreUsuario.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editNombreUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editNombreUsuarioActionPerformed(evt);
-            }
-        });
         jPanel5.add(editNombreUsuario);
-
-        tituloCrearUser25.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        tituloCrearUser25.setText("apellidos");
-        jPanel5.add(tituloCrearUser25);
-
-        editapellidosUsuario.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        editapellidosUsuario.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editapellidosUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editapellidosUsuarioActionPerformed(evt);
-            }
-        });
-        jPanel5.add(editapellidosUsuario);
 
         tituloCrearUser26.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser26.setText("nombre usuario");
@@ -1019,21 +1157,15 @@ public class InterDioses extends javax.swing.JFrame {
 
         editnombreNick.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editnombreNick.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editnombreNick.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editnombreNickActionPerformed(evt);
-            }
-        });
         jPanel5.add(editnombreNick);
 
         tituloCrearUser27.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         tituloCrearUser27.setText("numero de telefono");
         jPanel5.add(tituloCrearUser27);
 
-        jSpinner1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 999999999, 1));
-        jSpinner1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        jPanel5.add(jSpinner1);
+        editTelefonoUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editTelefonoUser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        jPanel5.add(editTelefonoUser);
 
         editarUsuarios.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 270, 220));
 
@@ -1081,15 +1213,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser33.setText("Editar heroes");
         editarHeroes.add(tituloCrearUser33, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal8.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal8.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal8ActionPerformed(evt);
-            }
-        });
-        editarHeroes.add(insertNombreAnimal8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -1102,27 +1225,17 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser35.setText("pass actual");
         jPanel7.add(tituloCrearUser35);
 
-        editPassActualDioses1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        editPassActualDioses1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editPassActualDioses1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editPassActualDioses1ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(editPassActualDioses1);
+        editPassActualHeroes.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editPassActualHeroes.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        jPanel7.add(editPassActualHeroes);
 
         tituloCrearUser36.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
         tituloCrearUser36.setText("pass nueva");
         jPanel7.add(tituloCrearUser36);
 
-        editPassNuevaDioses1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        editPassNuevaDioses1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editPassNuevaDioses1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editPassNuevaDioses1ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(editPassNuevaDioses1);
+        editPassNuevaHeroes.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        editPassNuevaHeroes.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        jPanel7.add(editPassNuevaHeroes);
 
         tituloCrearUser37.setFont(new java.awt.Font("SPACE EXPLORER", 1, 12)); // NOI18N
         tituloCrearUser37.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1174,15 +1287,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser28.setText("Editar Dioses");
         editarDioses.add(tituloCrearUser28, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal7.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal7.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal7ActionPerformed(evt);
-            }
-        });
-        editarDioses.add(insertNombreAnimal7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -1197,11 +1301,6 @@ public class InterDioses extends javax.swing.JFrame {
 
         editPassActualDioses.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editPassActualDioses.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editPassActualDioses.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editPassActualDiosesActionPerformed(evt);
-            }
-        });
         jPanel6.add(editPassActualDioses);
 
         tituloCrearUser30.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
@@ -1210,11 +1309,6 @@ public class InterDioses extends javax.swing.JFrame {
 
         editPassNuevaDioses.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
         editPassNuevaDioses.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        editPassNuevaDioses.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editPassNuevaDiosesActionPerformed(evt);
-            }
-        });
         jPanel6.add(editPassNuevaDioses);
 
         tituloCrearUser31.setFont(new java.awt.Font("SPACE EXPLORER", 1, 12)); // NOI18N
@@ -1286,15 +1380,6 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser6.setText("Editar animales");
         editarAnimales.add(tituloCrearUser6, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
-        insertNombreAnimal2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal2ActionPerformed(evt);
-            }
-        });
-        editarAnimales.add(insertNombreAnimal2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
@@ -1361,11 +1446,11 @@ public class InterDioses extends javax.swing.JFrame {
         nombre2.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         nombre2.setText("Nombre");
 
-        insertNombreAnimal1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombreAnimal1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        insertNombreAnimal1.addActionListener(new java.awt.event.ActionListener() {
+        insertNombreCuidado.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertNombreCuidado.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        insertNombreCuidado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertNombreAnimal1ActionPerformed(evt);
+                insertNombreCuidadoActionPerformed(evt);
             }
         });
 
@@ -1384,7 +1469,7 @@ public class InterDioses extends javax.swing.JFrame {
         datosUser2Layout.setHorizontalGroup(
             datosUser2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(nombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(insertNombreAnimal1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(insertNombreCuidado, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(apellidos2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
@@ -1393,7 +1478,7 @@ public class InterDioses extends javax.swing.JFrame {
             .addGroup(datosUser2Layout.createSequentialGroup()
                 .addComponent(nombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(insertNombreAnimal1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(insertNombreCuidado, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(apellidos2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
@@ -1402,12 +1487,17 @@ public class InterDioses extends javax.swing.JFrame {
 
         crearCuidados.add(datosUser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 590, 230));
 
-        jButton7.setBackground(new java.awt.Color(223, 208, 181));
-        jButton7.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton7.setText("Crear");
-        jButton7.setBorderPainted(false);
-        jButton7.setFocusPainted(false);
-        crearCuidados.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
+        crearCuidadoNuevo.setBackground(new java.awt.Color(223, 208, 181));
+        crearCuidadoNuevo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearCuidadoNuevo.setText("Crear");
+        crearCuidadoNuevo.setBorderPainted(false);
+        crearCuidadoNuevo.setFocusPainted(false);
+        crearCuidadoNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearCuidadoNuevoActionPerformed(evt);
+            }
+        });
+        crearCuidados.add(crearCuidadoNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
 
         fondo.add(crearCuidados, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1448,12 +1538,17 @@ public class InterDioses extends javax.swing.JFrame {
 
         crearAnimales.add(datosUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 230));
 
-        jButton6.setBackground(new java.awt.Color(223, 208, 181));
-        jButton6.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton6.setText("Crear");
-        jButton6.setBorderPainted(false);
-        jButton6.setFocusPainted(false);
-        crearAnimales.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 260, -1));
+        crearAnimalNuevo.setBackground(new java.awt.Color(223, 208, 181));
+        crearAnimalNuevo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearAnimalNuevo.setText("Crear");
+        crearAnimalNuevo.setBorderPainted(false);
+        crearAnimalNuevo.setFocusPainted(false);
+        crearAnimalNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearAnimalNuevoActionPerformed(evt);
+            }
+        });
+        crearAnimales.add(crearAnimalNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 260, -1));
 
         fondo.add(crearAnimales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1489,17 +1584,17 @@ public class InterDioses extends javax.swing.JFrame {
 
         crearEspecialidad.add(datosUser3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 130));
 
-        jButton12.setBackground(new java.awt.Color(223, 208, 181));
-        jButton12.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton12.setText("Crear");
-        jButton12.setBorderPainted(false);
-        jButton12.setFocusPainted(false);
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
+        crearEspecialidadNueva.setBackground(new java.awt.Color(223, 208, 181));
+        crearEspecialidadNueva.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearEspecialidadNueva.setText("Crear");
+        crearEspecialidadNueva.setBorderPainted(false);
+        crearEspecialidadNueva.setFocusPainted(false);
+        crearEspecialidadNueva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
+                crearEspecialidadNuevaActionPerformed(evt);
             }
         });
-        crearEspecialidad.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 260, -1));
+        crearEspecialidad.add(crearEspecialidadNueva, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 260, -1));
 
         descripcionEspecialidad.setColumns(20);
         descripcionEspecialidad.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
@@ -1526,6 +1621,7 @@ public class InterDioses extends javax.swing.JFrame {
         datosUser4.add(nombre4);
 
         fechaInicioTareas.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        fechaInicioTareas.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
         datosUser4.add(fechaInicioTareas);
 
         apellidos4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
@@ -1533,6 +1629,7 @@ public class InterDioses extends javax.swing.JFrame {
         datosUser4.add(apellidos4);
 
         fechaFinalTareas.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        fechaFinalTareas.setFormats(new SimpleDateFormat("yyyy-MM-dd"));
         datosUser4.add(fechaFinalTareas);
 
         telefono3.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
@@ -1575,47 +1672,94 @@ public class InterDioses extends javax.swing.JFrame {
         crearUser.setOpaque(false);
         crearUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tituloCrearUser25.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
+        tituloCrearUser25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tituloCrearUser25.setText("Agregar usuario");
+        crearUser.add(tituloCrearUser25, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
+
+        datosUser5.setOpaque(false);
+        datosUser5.setLayout(new java.awt.GridLayout(0, 1));
+
+        nombre5.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        nombre5.setText("Nombre");
+        datosUser5.add(nombre5);
+
+        insertNombre1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertNombre1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(insertNombre1);
+
+        telefono4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        telefono4.setText("Telefono");
+        datosUser5.add(telefono4);
+
+        numTel1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        numTel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(numTel1);
+
+        nikname1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        nikname1.setText("nombre de usuario");
+        datosUser5.add(nikname1);
+
+        insertnik1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertnik1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(insertnik1);
+
+        crearUser.add(datosUser5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 220));
+
+        jButton33.setBackground(new java.awt.Color(223, 208, 181));
+        jButton33.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        jButton33.setText("Crear");
+        jButton33.setBorderPainted(false);
+        jButton33.setFocusPainted(false);
+        crearUser.add(jButton33, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
+
+        dios1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        dios1.setText("Dios");
+        crearUser.add(dios1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 100, 19));
+
+        heroe1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        heroe1.setText("Heroe");
+        crearUser.add(heroe1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 100, 21));
+
+        visitante1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        visitante1.setText("Visitante");
+        crearUser.add(visitante1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
+
+        fondo.add(crearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
+
+        crearPassUser.setOpaque(false);
+        crearPassUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         tituloCrearUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
         tituloCrearUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tituloCrearUser.setText("Agregar usuario");
-        crearUser.add(tituloCrearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
+        tituloCrearUser.setText("Crear Password");
+        crearPassUser.add(tituloCrearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 20, 640, -1));
 
         datosUser.setOpaque(false);
         datosUser.setLayout(new java.awt.GridLayout(0, 1));
 
         nombre.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        nombre.setText("Nombre");
+        nombre.setText("Escriba la password");
         datosUser.add(nombre);
 
-        insertNombre.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombre.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser.add(insertNombre);
-
-        apellidos.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        apellidos.setText("Apelllido/os");
-        datosUser.add(apellidos);
-
-        insertApellidos.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertApellidos.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser.add(insertApellidos);
+        insertPassUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertPassUser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(insertPassUser);
 
         telefono.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        telefono.setText("Telefono");
+        telefono.setText("Confirmar password");
         datosUser.add(telefono);
 
-        numTel.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        numTel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser.add(numTel);
+        confirmacionPass.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        confirmacionPass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser.add(confirmacionPass);
 
         nikname.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        nikname.setText("nombre de usuario");
+        nikname.setForeground(new java.awt.Color(204, 0, 51));
+        nikname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         datosUser.add(nikname);
 
-        insertnik.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertnik.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser.add(insertnik);
-
-        crearUser.add(datosUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 220));
+        crearPassUser.add(datosUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 220));
 
         jButton5.setBackground(new java.awt.Color(223, 208, 181));
         jButton5.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
@@ -1627,21 +1771,9 @@ public class InterDioses extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        crearUser.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
+        crearPassUser.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 260, -1));
 
-        dios.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        dios.setText("Dios");
-        crearUser.add(dios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 100, 19));
-
-        heroe.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        heroe.setText("Heroe");
-        crearUser.add(heroe, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 100, 21));
-
-        visitante.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        visitante.setText("Visitante");
-        crearUser.add(visitante, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
-
-        fondo.add(crearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
+        fondo.add(crearPassUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
         fondoImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondoDioses.jpg"))); // NOI18N
         fondo.add(fondoImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 720, 520));
@@ -1673,17 +1805,19 @@ public class InterDioses extends javax.swing.JFrame {
         seleccion.setVisible(true);
     }//GEN-LAST:event_cerrarSesionMouseClicked
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void editarCuidadosBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarCuidadosBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarCuidado.setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarCuidadosBotonActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+    private void editarEspecialidadesBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarEspecialidadesBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarEspecialidades.setVisible(true);
-    }//GEN-LAST:event_jButton9ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarEspecialidadesBotonActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         volver.setVisible(true);
@@ -1751,19 +1885,37 @@ public class InterDioses extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void insertNombreAnimal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal1ActionPerformed
+    private void insertNombreCuidadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreCuidadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal1ActionPerformed
+    }//GEN-LAST:event_insertNombreCuidadoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void agregarAnimalesBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarAnimalesBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         crearAnimales.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_agregarAnimalesBotonActionPerformed
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton12ActionPerformed
+    private void crearEspecialidadNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearEspecialidadNuevaActionPerformed
+    //INSERT INTO especialidades (`nombre`, `descripcion`, `id_heroe`) VALUES ('', '', '');
+    String idHeroe=  heroeEspecialidad.getSelectedItem().toString().substring(0, heroeEspecialidad.getSelectedItem().toString().indexOf("-"));
+        if(!insertNombreEspecialidad.getText().trim().equalsIgnoreCase("") && !descripcionEspecialidad.getText().trim().equalsIgnoreCase("")){
+            try {
+                String consulta = "INSERT INTO especialidades (`nombre`, `descripcion`, `id_heroe`) VALUES ('"+insertNombreEspecialidad.getText().trim()+"', '"+descripcionEspecialidad.getText().trim()+"', '"+idHeroe+"')";
+                Statement stmt = (Statement) bd.createStatement();
+                ResultSet rs=stmt.executeQuery(consulta);
+
+                if(!rs.first()){
+                    JOptionPane.showMessageDialog(null,"Especialidad creado correctametne");
+                    insertNombreEspecialidad.setText("");
+                    descripcionEspecialidad.setText("");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
+        }
+    }//GEN-LAST:event_crearEspecialidadNuevaActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
@@ -1774,10 +1926,6 @@ public class InterDioses extends javax.swing.JFrame {
         botones.setVisible(false);
         crearTareas.setVisible(true);
     }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void insertNombreAnimal2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal2ActionPerformed
 
     private void editNombreAnimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editNombreAnimalActionPerformed
         // TODO add your handling code here:
@@ -1791,95 +1939,40 @@ public class InterDioses extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editrazaAnimalesActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void editarAnimalesBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarAnimalesBotonActionPerformed
        volver.setVisible(true);
         botones.setVisible(false);
         editarAnimales.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarAnimalesBotonActionPerformed
 
-    private void insertNombreAnimal3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal3ActionPerformed
-
-    private void editNombreCuidadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editNombreCuidadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editNombreCuidadoActionPerformed
-
-    private void insertNombreAnimal4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal4ActionPerformed
-
-    private void editNombreEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editNombreEspecialidadesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editNombreEspecialidadesActionPerformed
-
-    private void insertNombreAnimal5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal5ActionPerformed
-
-    private void insertNombreAnimal6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal6ActionPerformed
-
-    private void editNombreUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editNombreUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editNombreUsuarioActionPerformed
-
-    private void editapellidosUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editapellidosUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editapellidosUsuarioActionPerformed
-
-    private void editnombreNickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editnombreNickActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editnombreNickActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+    private void editarTareasBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarTareasBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarTareas.setVisible(true);
-    }//GEN-LAST:event_jButton10ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarTareasBotonActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void editarUsuariosBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarUsuariosBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarUsuarios.setVisible(true);
-    }//GEN-LAST:event_jButton11ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarUsuariosBotonActionPerformed
 
-    private void insertNombreAnimal7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal7ActionPerformed
-
-    private void editPassActualDiosesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPassActualDiosesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editPassActualDiosesActionPerformed
-
-    private void editPassNuevaDiosesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPassNuevaDiosesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editPassNuevaDiosesActionPerformed
-
-    private void insertNombreAnimal8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreAnimal8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_insertNombreAnimal8ActionPerformed
-
-    private void editPassActualDioses1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPassActualDioses1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editPassActualDioses1ActionPerformed
-
-    private void editPassNuevaDioses1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPassNuevaDioses1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editPassNuevaDioses1ActionPerformed
-
-    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+    private void editarDiosesBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDiosesBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarDioses.setVisible(true);
-    }//GEN-LAST:event_jButton22ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarDiosesBotonActionPerformed
 
-    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+    private void editarHeroesBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarHeroesBotonActionPerformed
         volver.setVisible(true);
         botones.setVisible(false);
         editarHeroes.setVisible(true);
-    }//GEN-LAST:event_jButton24ActionPerformed
+        this.cargarDatos();
+    }//GEN-LAST:event_editarHeroesBotonActionPerformed
 
     private void tablaAnimalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAnimalesMouseClicked
         
@@ -1893,7 +1986,7 @@ public class InterDioses extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaAnimalesMouseClicked
 
     private void tablaCuidadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCuidadosMouseClicked
-        DefaultTableModel model = (DefaultTableModel)tablaAnimales.getModel();
+        DefaultTableModel model = (DefaultTableModel)tablaCuidados.getModel();
         int pos = tablaCuidados.getSelectedRow();
 
         try {
@@ -1907,23 +2000,29 @@ public class InterDioses extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
         }
-         
 
-        
-        
     }//GEN-LAST:event_tablaCuidadosMouseClicked
 
     private void tablaEspecialidadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEspecialidadesMouseClicked
         DefaultTableModel model = (DefaultTableModel)tablaEspecialidades.getModel();
-        int pos = tablaCuidados.getSelectedRow();
+        int pos = tablaEspecialidades.getSelectedRow();
 
         try {
-            String consulta = "SELECT usuarios.nombre, usuarios.apellido, FROM usuarios, heroes WHERE usuarios.id=heroes.id";
+            String consulta = "SELECT usuarios.nombre FROM usuarios, heroes WHERE usuarios.id=heroes.id";
             Statement stmt = (Statement) bd.createStatement();
             ResultSet rs=stmt.executeQuery(consulta);
             
             while(rs.next()){
-                editHeroeEspecialidades.addItem(rs.getString(1) + " " + rs.getNString(2));
+                editHeroeEspecialidades.addItem(rs.getString(1));
+            }
+
+            consulta = "SELECT especialidades.nombre, especialidades.descripcion FROM especialidades WHERE especialidades.id="+model.getValueAt(pos, 0);
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
+            
+            while(rs.next()){
+                editNombreEspecialidades.setText(rs.getString(1));
+                editDescripcionEspecialidades.setText(rs.getString(2));
             }
   
         } catch (SQLException ex) {
@@ -1932,6 +2031,83 @@ public class InterDioses extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_tablaEspecialidadesMouseClicked
+
+    private void tablaTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTareasMouseClicked
+        DefaultTableModel model = (DefaultTableModel)tablaTareas.getModel();
+        int pos = tablaTareas.getSelectedRow();
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
+        String input;
+        Date aux = null;
+        
+        if(model.getValueAt(pos, 6).toString().equalsIgnoreCase("SI")){
+            finlizadoSI.setSelected(true);
+        }else{
+            finalizadoNO.setSelected(true);
+        }
+        
+        try {
+           input = model.getValueAt(pos, 1).toString();
+           aux = ft.parse(input); 
+           editFechaInico.setDate(aux);
+           input = model.getValueAt(pos, 2).toString();
+           aux = ft.parse(input); 
+           editFechaFinal.setDate(aux);
+
+        } catch (ParseException e) { 
+           System.out.println("Unparseable using " + ft); 
+        }
+    }//GEN-LAST:event_tablaTareasMouseClicked
+
+    private void tablaUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUsuariosMouseClicked
+        DefaultTableModel model = (DefaultTableModel)tablaUsuarios.getModel();
+        int pos = tablaUsuarios.getSelectedRow();
+
+        editNombreUsuario.setText(model.getValueAt(pos, 1).toString());
+        editnombreNick.setText(model.getValueAt(pos, 3).toString());
+        editTelefonoUser.setText(model.getValueAt(pos, 2).toString());
+        
+    }//GEN-LAST:event_tablaUsuariosMouseClicked
+
+    private void crearAnimalNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearAnimalNuevoActionPerformed
+        if(!insertNombreAnimal.getText().trim().equalsIgnoreCase("") && !razaAnimal.getText().trim().equalsIgnoreCase("") && !procedenciaAnimal.getText().trim().equalsIgnoreCase("")){
+            try {
+                String consulta = "INSERT INTO animales (nombre, raza, procedencia) VALUES ('" + insertNombreAnimal.getText().trim() + "', '" + razaAnimal.getText().trim() + "', '" + procedenciaAnimal.getText().trim() + "')";
+                Statement stmt = (Statement) bd.createStatement();
+                ResultSet rs=stmt.executeQuery(consulta);
+
+                if(!rs.first()){
+                    JOptionPane.showMessageDialog(null,"Animal creado correctametne");
+                    insertNombreAnimal.setText("");
+                    razaAnimal.setText("");
+                    procedenciaAnimal.setText("");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
+        }
+    }//GEN-LAST:event_crearAnimalNuevoActionPerformed
+
+    private void crearCuidadoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearCuidadoNuevoActionPerformed
+        if(!insertNombreCuidado.getText().trim().equalsIgnoreCase("") && !descripcionCuidado.getText().trim().equalsIgnoreCase("")){
+            try {
+                String consulta = "INSERT INTO cuidado (`nombre`, `descripcion`) VALUES ('"+insertNombreCuidado.getText().trim()+"', '"+descripcionCuidado.getText().trim()+"')";
+                Statement stmt = (Statement) bd.createStatement();
+                ResultSet rs=stmt.executeQuery(consulta);
+
+                if(!rs.first()){
+                    JOptionPane.showMessageDialog(null,"Cuidado creado correctametne");
+                    insertNombreCuidado.setText("");
+                    descripcionCuidado.setText("");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
+        }
+    }//GEN-LAST:event_crearCuidadoNuevoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1972,9 +2148,10 @@ public class InterDioses extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> AnimalTareas;
+    private javax.swing.JComboBox<String> EditTareasAnimal;
     private javax.swing.JPanel agregar;
+    private javax.swing.JButton agregarAnimalesBoton;
     private javax.swing.JButton agregarUsers;
-    private javax.swing.JLabel apellidos;
     private javax.swing.JLabel apellidos1;
     private javax.swing.JLabel apellidos2;
     private javax.swing.JLabel apellidos3;
@@ -1984,9 +2161,14 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JPanel cambiarPass;
     private javax.swing.JLabel cerrar;
     private javax.swing.JLabel cerrar1;
+    private javax.swing.JTextField confirmacionPass;
+    private javax.swing.JButton crearAnimalNuevo;
     private javax.swing.JPanel crearAnimales;
+    private javax.swing.JButton crearCuidadoNuevo;
     private javax.swing.JPanel crearCuidados;
     private javax.swing.JPanel crearEspecialidad;
+    private javax.swing.JButton crearEspecialidadNueva;
+    private javax.swing.JPanel crearPassUser;
     private javax.swing.JPanel crearTareas;
     private javax.swing.JPanel crearUser;
     private javax.swing.JComboBox<String> cuidadoTareas;
@@ -1995,56 +2177,60 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JPanel datosUser2;
     private javax.swing.JPanel datosUser3;
     private javax.swing.JPanel datosUser4;
+    private javax.swing.JPanel datosUser5;
     private javax.swing.JTextArea descripcionCuidado;
     private javax.swing.JTextArea descripcionEspecialidad;
-    private javax.swing.JCheckBox dios;
+    private javax.swing.JCheckBox dios1;
     private javax.swing.JTextArea editCuidadoDescripcion;
     private javax.swing.JTextArea editDescripcionEspecialidades;
+    private org.jdesktop.swingx.JXDatePicker editFechaFinal;
+    private org.jdesktop.swingx.JXDatePicker editFechaInico;
     private javax.swing.JComboBox<String> editHeroeEspecialidades;
     private javax.swing.JTextField editNombreAnimal;
     private javax.swing.JTextField editNombreCuidado;
     private javax.swing.JTextField editNombreEspecialidades;
     private javax.swing.JTextField editNombreUsuario;
     private javax.swing.JTextField editPassActualDioses;
-    private javax.swing.JTextField editPassActualDioses1;
+    private javax.swing.JTextField editPassActualHeroes;
     private javax.swing.JTextField editPassNuevaDioses;
-    private javax.swing.JTextField editPassNuevaDioses1;
+    private javax.swing.JTextField editPassNuevaHeroes;
     private javax.swing.JTextField editProcedenciaAnimales;
-    private javax.swing.JTextField editapellidosUsuario;
+    private javax.swing.JComboBox<String> editTareasCuidado;
+    private javax.swing.JComboBox<String> editTareasHeroe;
+    private javax.swing.JTextField editTelefonoUser;
     private javax.swing.JPanel editar;
     private javax.swing.JPanel editarAnimales;
+    private javax.swing.JButton editarAnimalesBoton;
     private javax.swing.JPanel editarCuidado;
+    private javax.swing.JButton editarCuidadosBoton;
     private javax.swing.JPanel editarDioses;
+    private javax.swing.JButton editarDiosesBoton;
     private javax.swing.JPanel editarEspecialidades;
+    private javax.swing.JButton editarEspecialidadesBoton;
     private javax.swing.JPanel editarHeroes;
+    private javax.swing.JButton editarHeroesBoton;
     private javax.swing.JPanel editarTareas;
+    private javax.swing.JButton editarTareasBoton;
     private javax.swing.JPanel editarUsuarios;
+    private javax.swing.JButton editarUsuariosBoton;
     private javax.swing.JTextField editnombreNick;
     private javax.swing.JTextField editrazaAnimales;
     private org.jdesktop.swingx.JXDatePicker fechaFinalTareas;
     private org.jdesktop.swingx.JXDatePicker fechaInicioTareas;
+    private javax.swing.ButtonGroup finalizado;
+    private javax.swing.JRadioButton finalizadoNO;
+    private javax.swing.JRadioButton finlizadoSI;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel fondoImagen;
-    private javax.swing.JCheckBox heroe;
+    private javax.swing.JCheckBox heroe1;
     private javax.swing.JComboBox<String> heroeEspecialidad;
     private javax.swing.JComboBox<String> heroeTareas;
-    private javax.swing.JTextField insertApellidos;
-    private javax.swing.JTextField insertNombre;
+    private javax.swing.JTextField insertNombre1;
     private javax.swing.JTextField insertNombreAnimal;
-    private javax.swing.JTextField insertNombreAnimal1;
-    private javax.swing.JTextField insertNombreAnimal2;
-    private javax.swing.JTextField insertNombreAnimal3;
-    private javax.swing.JTextField insertNombreAnimal4;
-    private javax.swing.JTextField insertNombreAnimal5;
-    private javax.swing.JTextField insertNombreAnimal6;
-    private javax.swing.JTextField insertNombreAnimal7;
-    private javax.swing.JTextField insertNombreAnimal8;
+    private javax.swing.JTextField insertNombreCuidado;
     private javax.swing.JTextField insertNombreEspecialidad;
-    private javax.swing.JTextField insertnik;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
+    private javax.swing.JTextField insertPassUser;
+    private javax.swing.JTextField insertnik1;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
@@ -2052,12 +2238,9 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton23;
-    private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
@@ -2067,20 +2250,13 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
+    private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
     private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton36;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2099,10 +2275,8 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JSpinner jSpinner1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private javax.swing.JLabel nikname;
+    private javax.swing.JLabel nikname1;
     private javax.swing.JLabel nikname2;
     private javax.swing.JLabel nikname3;
     private javax.swing.JLabel nombre;
@@ -2110,7 +2284,8 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel nombre2;
     private javax.swing.JLabel nombre3;
     private javax.swing.JLabel nombre4;
-    private javax.swing.JTextField numTel;
+    private javax.swing.JLabel nombre5;
+    private javax.swing.JTextField numTel1;
     private javax.swing.JTextField procedenciaAnimal;
     private javax.swing.JButton quitarPrivilegiosDioses;
     private javax.swing.JButton quitarPrivilegiosDioses1;
@@ -2126,6 +2301,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel telefono1;
     private javax.swing.JLabel telefono2;
     private javax.swing.JLabel telefono3;
+    private javax.swing.JLabel telefono4;
     private javax.swing.JLabel titulo;
     private javax.swing.JLabel tituloCrearUser;
     private javax.swing.JLabel tituloCrearUser1;
@@ -2165,7 +2341,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel tituloCrearUser7;
     private javax.swing.JLabel tituloCrearUser8;
     private javax.swing.JLabel tituloCrearUser9;
-    private javax.swing.JCheckBox visitante;
+    private javax.swing.JCheckBox visitante1;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }
