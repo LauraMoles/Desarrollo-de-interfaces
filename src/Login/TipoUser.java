@@ -93,7 +93,9 @@ public class TipoUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JOptionPane.showMessageDialog(null,"Opcion sin configurar");
+        InterUsuarios.InterVisitantes interfaz = new InterUsuarios.InterVisitantes();
+        this.setVisible(false);
+        interfaz.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

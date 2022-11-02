@@ -6,6 +6,10 @@
 package InterUsuarios;
 
 import Herramientas.ConfBD;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -220,6 +225,9 @@ public class InterDioses extends javax.swing.JFrame {
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
 
+            cuidadoTareas.removeAllItems();
+            editTareasCuidado.removeAllItems();
+            
             while(rs.next()){
                 cuidadoTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
                 editTareasCuidado.addItem(rs.getString(1)+"-"+rs.getNString(2));
@@ -229,6 +237,9 @@ public class InterDioses extends javax.swing.JFrame {
             consulta = "SELECT * FROM animales";
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
+            
+            AnimalTareas.removeAllItems();
+            EditTareasAnimal.removeAllItems();
 
             while(rs.next()){
                 AnimalTareas.addItem(rs.getString(1)+"-"+rs.getNString(2));
@@ -239,6 +250,10 @@ public class InterDioses extends javax.swing.JFrame {
             consulta = "SELECT usuarios.id, usuarios.nombre FROM usuarios, heroes WHERE usuarios.id=heroes.id";
             stmt = (Statement) bd.createStatement();
             rs=stmt.executeQuery(consulta);
+            
+            heroeTareas.removeAllItems();
+            heroeEspecialidad.removeAllItems();
+            editTareasHeroe.removeAllItems();
 
             while(rs.next()){
                 heroeTareas.addItem(rs.getString(1)+"-"+rs.getString(2));
@@ -248,57 +263,92 @@ public class InterDioses extends javax.swing.JFrame {
 
 
             //tablaAnimales
-             consulta = "SELECT * FROM animales";
-             stmt = (Statement) bd.createStatement();
-             rs=stmt.executeQuery(consulta);
+            consulta = "SELECT * FROM animales";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
 
-             model = (DefaultTableModel)tablaAnimales.getModel();
-
+            model = (DefaultTableModel)tablaAnimales.getModel();
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
 
             //tablaCuidados
-             consulta = "SELECT * FROM especialidades";
-             stmt = (Statement) bd.createStatement();
-             rs=stmt.executeQuery(consulta);
+            consulta = "SELECT * FROM especialidades";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
 
-             model = (DefaultTableModel)tablaCuidados.getModel();
-
+            model = (DefaultTableModel)tablaCuidados.getModel();
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
             //tablaUsuarios
-             consulta = "SELECT * FROM usuarios";
-             stmt = (Statement) bd.createStatement();
-             rs=stmt.executeQuery(consulta);
+            consulta = "SELECT * FROM usuarios";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
 
-             model = (DefaultTableModel)tablaUsuarios.getModel();
-
+            model = (DefaultTableModel)tablaUsuarios.getModel();
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
             //tablaHeroes
-             consulta = "SELECT heroes.id,usuarios.nombre, usuarios.usuario FROM heroes, usuarios WHERE usuarios.id=heroes.id";
-             stmt = (Statement) bd.createStatement();
-             rs=stmt.executeQuery(consulta);
+            consulta = "SELECT heroes.id,usuarios.nombre, usuarios.usuario FROM heroes, usuarios WHERE usuarios.id=heroes.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
 
-             model = (DefaultTableModel)tablaHeroes.getModel();
-
+            model = (DefaultTableModel)tablaHeroes.getModel();
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
             }
             //tablaDioses
-             consulta = "SELECT dioses.id,usuarios.nombre, usuarios.usuario FROM dioses, usuarios WHERE usuarios.id=dioses.id";
-             stmt = (Statement) bd.createStatement();
-             rs=stmt.executeQuery(consulta);
+            consulta = "SELECT dioses.id,usuarios.nombre, usuarios.usuario FROM dioses, usuarios WHERE usuarios.id=dioses.id";
+            stmt = (Statement) bd.createStatement();
+            rs=stmt.executeQuery(consulta);
 
-             model = (DefaultTableModel)tablaDioses.getModel();
-
+            model = (DefaultTableModel)tablaDioses.getModel();
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
@@ -310,7 +360,14 @@ public class InterDioses extends javax.swing.JFrame {
             rs=stmt.executeQuery(consulta);
 
             model = (DefaultTableModel)tablaEspecialidades.getModel();
-
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 Object [] row ={rs.getString(1),rs.getString(2),rs.getString(3)}; // Rellenar la fila con los datos correspondientes
                 model.addRow(row); // Añadir la fila a la tabla
@@ -322,7 +379,14 @@ public class InterDioses extends javax.swing.JFrame {
             String finalizado;
 
             model = (DefaultTableModel)tablaTareas.getModel();
-
+            if (model.getRowCount()>0){
+                int aux = model.getRowCount();
+                
+                for (int i = 0; i < aux; i++) {
+                    model.removeRow(0);
+                }
+            }
+            
             while(rs.next()){
                 if (rs.getString(7).equalsIgnoreCase("0")){
                     finalizado="No";
@@ -350,6 +414,7 @@ public class InterDioses extends javax.swing.JFrame {
 
         finalizado = new javax.swing.ButtonGroup();
         jCalendar1 = new com.toedter.calendar.JCalendar();
+        tipoUsuario = new javax.swing.ButtonGroup();
         barraSuperior = new javax.swing.JPanel();
         cerrar = new javax.swing.JLabel();
         cerrar1 = new javax.swing.JLabel();
@@ -477,6 +542,8 @@ public class InterDioses extends javax.swing.JFrame {
         tituloCrearUser8 = new javax.swing.JLabel();
         editProcedenciaAnimales = new javax.swing.JTextField();
         jButton17 = new javax.swing.JButton();
+        imagenEditarAnimal = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
         crearCuidados = new javax.swing.JPanel();
         tituloCrearUser2 = new javax.swing.JLabel();
         datosUser2 = new javax.swing.JPanel();
@@ -520,20 +587,20 @@ public class InterDioses extends javax.swing.JFrame {
         AnimalTareas = new javax.swing.JComboBox<>();
         nikname3 = new javax.swing.JLabel();
         heroeTareas = new javax.swing.JComboBox<>();
-        jButton13 = new javax.swing.JButton();
+        crearTareasNueva = new javax.swing.JButton();
         crearUser = new javax.swing.JPanel();
         tituloCrearUser25 = new javax.swing.JLabel();
         datosUser5 = new javax.swing.JPanel();
         nombre5 = new javax.swing.JLabel();
-        insertNombre1 = new javax.swing.JTextField();
+        insertNombreUsuario = new javax.swing.JTextField();
         telefono4 = new javax.swing.JLabel();
-        numTel1 = new javax.swing.JTextField();
+        numTelNewUser = new javax.swing.JTextField();
         nikname1 = new javax.swing.JLabel();
-        insertnik1 = new javax.swing.JTextField();
-        jButton33 = new javax.swing.JButton();
-        dios1 = new javax.swing.JCheckBox();
-        heroe1 = new javax.swing.JCheckBox();
-        visitante1 = new javax.swing.JCheckBox();
+        insertnikNewUser = new javax.swing.JTextField();
+        crearNuevoUser = new javax.swing.JButton();
+        dios = new javax.swing.JCheckBox();
+        heroe = new javax.swing.JCheckBox();
+        visitante = new javax.swing.JCheckBox();
         crearPassUser = new javax.swing.JPanel();
         tituloCrearUser = new javax.swing.JLabel();
         datosUser = new javax.swing.JPanel();
@@ -541,8 +608,8 @@ public class InterDioses extends javax.swing.JFrame {
         insertPassUser = new javax.swing.JTextField();
         telefono = new javax.swing.JLabel();
         confirmacionPass = new javax.swing.JTextField();
-        nikname = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        errorPass = new javax.swing.JLabel();
+        crearDiosHeroe = new javax.swing.JButton();
         fondoImagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1371,9 +1438,9 @@ public class InterDioses extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(219, 197, 170));
         jButton4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
-        jButton4.setText("borrar");
+        jButton4.setText("cambiar");
         jButton4.setBorderPainted(false);
-        editarAnimales.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, -1, -1));
+        editarAnimales.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 250, -1, -1));
 
         tituloCrearUser6.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
         tituloCrearUser6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1422,7 +1489,7 @@ public class InterDioses extends javax.swing.JFrame {
         });
         jPanel1.add(editProcedenciaAnimales);
 
-        editarAnimales.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, 270, 220));
+        editarAnimales.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 150, 220));
 
         jButton17.setBackground(new java.awt.Color(148, 107, 58));
         jButton17.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
@@ -1430,6 +1497,18 @@ public class InterDioses extends javax.swing.JFrame {
         jButton17.setText("Cancelar");
         jButton17.setBorderPainted(false);
         editarAnimales.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 300, 110, -1));
+        editarAnimales.add(imagenEditarAnimal, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 120, 150));
+
+        jButton6.setBackground(new java.awt.Color(219, 197, 170));
+        jButton6.setFont(new java.awt.Font("SPACE EXPLORER", 0, 10)); // NOI18N
+        jButton6.setText("borrar");
+        jButton6.setBorderPainted(false);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        editarAnimales.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, -1, -1));
 
         fondo.add(editarAnimales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1536,7 +1615,7 @@ public class InterDioses extends javax.swing.JFrame {
         procedenciaAnimal.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         datosUser1.add(procedenciaAnimal);
 
-        crearAnimales.add(datosUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 230));
+        crearAnimales.add(datosUser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 190));
 
         crearAnimalNuevo.setBackground(new java.awt.Color(223, 208, 181));
         crearAnimalNuevo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
@@ -1548,7 +1627,7 @@ public class InterDioses extends javax.swing.JFrame {
                 crearAnimalNuevoActionPerformed(evt);
             }
         });
-        crearAnimales.add(crearAnimalNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 260, -1));
+        crearAnimales.add(crearAnimalNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 290, 260, -1));
 
         fondo.add(crearAnimales, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1655,17 +1734,17 @@ public class InterDioses extends javax.swing.JFrame {
 
         crearTareas.add(datosUser4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 260));
 
-        jButton13.setBackground(new java.awt.Color(223, 208, 181));
-        jButton13.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton13.setText("Crear");
-        jButton13.setBorderPainted(false);
-        jButton13.setFocusPainted(false);
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
+        crearTareasNueva.setBackground(new java.awt.Color(223, 208, 181));
+        crearTareasNueva.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearTareasNueva.setText("Crear");
+        crearTareasNueva.setBorderPainted(false);
+        crearTareasNueva.setFocusPainted(false);
+        crearTareasNueva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+                crearTareasNuevaActionPerformed(evt);
             }
         });
-        crearTareas.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
+        crearTareas.add(crearTareasNueva, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
 
         fondo.add(crearTareas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1684,46 +1763,54 @@ public class InterDioses extends javax.swing.JFrame {
         nombre5.setText("Nombre");
         datosUser5.add(nombre5);
 
-        insertNombre1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertNombre1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser5.add(insertNombre1);
+        insertNombreUsuario.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertNombreUsuario.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(insertNombreUsuario);
 
         telefono4.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         telefono4.setText("Telefono");
         datosUser5.add(telefono4);
 
-        numTel1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        numTel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser5.add(numTel1);
+        numTelNewUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        numTelNewUser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(numTelNewUser);
 
         nikname1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
         nikname1.setText("nombre de usuario");
         datosUser5.add(nikname1);
 
-        insertnik1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        insertnik1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        datosUser5.add(insertnik1);
+        insertnikNewUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        insertnikNewUser.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        datosUser5.add(insertnikNewUser);
 
         crearUser.add(datosUser5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 220));
 
-        jButton33.setBackground(new java.awt.Color(223, 208, 181));
-        jButton33.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton33.setText("Crear");
-        jButton33.setBorderPainted(false);
-        jButton33.setFocusPainted(false);
-        crearUser.add(jButton33, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
+        crearNuevoUser.setBackground(new java.awt.Color(223, 208, 181));
+        crearNuevoUser.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearNuevoUser.setText("Crear");
+        crearNuevoUser.setBorderPainted(false);
+        crearNuevoUser.setFocusPainted(false);
+        crearNuevoUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearNuevoUserActionPerformed(evt);
+            }
+        });
+        crearUser.add(crearNuevoUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 260, -1));
 
-        dios1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        dios1.setText("Dios");
-        crearUser.add(dios1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 100, 19));
+        tipoUsuario.add(dios);
+        dios.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        dios.setText("Dios");
+        crearUser.add(dios, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 290, 100, 19));
 
-        heroe1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        heroe1.setText("Heroe");
-        crearUser.add(heroe1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 100, 21));
+        tipoUsuario.add(heroe);
+        heroe.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        heroe.setText("Heroe");
+        crearUser.add(heroe, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 100, 21));
 
-        visitante1.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
-        visitante1.setText("Visitante");
-        crearUser.add(visitante1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
+        tipoUsuario.add(visitante);
+        visitante.setFont(new java.awt.Font("SPACE EXPLORER", 0, 11)); // NOI18N
+        visitante.setText("Visitante");
+        crearUser.add(visitante, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
 
         fondo.add(crearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1754,24 +1841,24 @@ public class InterDioses extends javax.swing.JFrame {
         confirmacionPass.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
         datosUser.add(confirmacionPass);
 
-        nikname.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
-        nikname.setForeground(new java.awt.Color(204, 0, 51));
-        nikname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        datosUser.add(nikname);
+        errorPass.setFont(new java.awt.Font("SPACE EXPLORER", 0, 12)); // NOI18N
+        errorPass.setForeground(new java.awt.Color(204, 0, 51));
+        errorPass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        datosUser.add(errorPass);
 
         crearPassUser.add(datosUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 590, 220));
 
-        jButton5.setBackground(new java.awt.Color(223, 208, 181));
-        jButton5.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
-        jButton5.setText("Crear");
-        jButton5.setBorderPainted(false);
-        jButton5.setFocusPainted(false);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        crearDiosHeroe.setBackground(new java.awt.Color(223, 208, 181));
+        crearDiosHeroe.setFont(new java.awt.Font("SPACE EXPLORER", 0, 13)); // NOI18N
+        crearDiosHeroe.setText("Crear");
+        crearDiosHeroe.setBorderPainted(false);
+        crearDiosHeroe.setFocusPainted(false);
+        crearDiosHeroe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                crearDiosHeroeActionPerformed(evt);
             }
         });
-        crearPassUser.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 260, -1));
+        crearPassUser.add(crearDiosHeroe, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 260, -1));
 
         fondo.add(crearPassUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 660, 390));
 
@@ -1877,13 +1964,118 @@ public class InterDioses extends javax.swing.JFrame {
         }else if (editarHeroes.isVisible()){
             editarHeroes.setVisible(false);
             botones.setVisible(true);
+        }else if(crearPassUser.isVisible()){
+            crearPassUser.setVisible(false);
+            botones.setVisible(true);
         }
         this.volver.setVisible(false);
     }//GEN-LAST:event_volverActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void crearDiosHeroeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearDiosHeroeActionPerformed
+        try {
+            //insertPassUser
+            //confirmacionPass
+            //INSERT INTO `heroes` (`id`, `pass`) VALUES ('8', '00000');
+            //SELECT usuarios.id, usuarios.nombre FROM usuarios
+            String id_heroe, id_dios;
+            
+            //bd.setAutoCommit(false);
+            if(insertPassUser.getText().endsWith(confirmacionPass.getText())){
+                if(heroe.isSelected()){
+                
+                    String consulta = "INSERT INTO usuarios (`usuario`, `telefono`, `nombre`) VALUES ('"+insertNombreUsuario.getText().trim()+"', '"+numTelNewUser.getText().trim()+"', '"+insertnikNewUser.getText().trim()+"')";
+                    Statement stmt = (Statement) bd.createStatement();
+                    ResultSet rs=stmt.executeQuery(consulta);
+                    
+
+                     consulta = "SELECT usuarios.id, usuarios.nombre FROM usuarios WHERE nombre='"+insertNombreUsuario+"'";
+                     stmt = (Statement) bd.createStatement();
+                     rs=stmt.executeQuery(consulta);
+                     
+                     System.out.println(rs.first());
+                     if (rs.first()){
+                         System.out.println("hola");
+                            id_heroe = rs.getString(1);
+                            consulta = "INSERT INTO `heroes` (`id`, `pass`) VALUES ('"+id_heroe+"', '"+insertPassUser+"')";
+                            stmt = (Statement) bd.createStatement();
+                            rs=stmt.executeQuery(consulta);
+                            System.out.println(consulta);
+                            
+                            if(!rs.first()){
+                                JOptionPane.showMessageDialog(null,"Heroe creado correctametne");
+                                insertNombreCuidado.setText("");
+                                descripcionCuidado.setText("");      
+
+                                crearPassUser.setVisible(false);
+                                crearUser.setVisible(true);
+                            } else{
+                                JOptionPane.showMessageDialog(null,"error inesperado");
+                            }
+                         
+                    }
+//                     while(rs.next()){
+//                         System.out.println("oh");
+//                         System.out.println(rs.getString(2).equalsIgnoreCase(insertNombreUsuario.getText().trim()));
+//                         System.out.println(rs.getString(2));
+//                         System.out.println(insertNombreUsuario.getText().trim());
+//                         if(rs.getString(2).equalsIgnoreCase(insertNombreUsuario.getText().trim())){
+//                             
+//                            id_heroe = rs.getString(1);
+//                            consulta = "INSERT INTO `heroes` (`id`, `pass`) VALUES ('"+id_heroe+"', '"+insertPassUser+"')";
+//                            stmt = (Statement) bd.createStatement();
+//                            rs=stmt.executeQuery(consulta);
+//                             System.out.println(consulta);
+//                         }
+//                     }
+
+                    
+                    
+                    
+                }else{
+                    String consulta = "INSERT INTO usuarios (`usuario`, `telefono`, `nombre`) VALUES ('"+insertNombreUsuario.getText().trim()+"', '"+numTelNewUser.getText().trim()+"', '"+insertnikNewUser.getText().trim()+"')";
+                    Statement stmt = (Statement) bd.createStatement();
+                    ResultSet rs=stmt.executeQuery(consulta);
+
+                     consulta = "SELECT usuarios.id, usuarios.nombre FROM usuarios";
+                     stmt = (Statement) bd.createStatement();
+                     rs=stmt.executeQuery(consulta);
+                     while(rs.next()){
+                         if(rs.getString(2).equalsIgnoreCase(insertNombreUsuario.getText().trim())){
+                            id_dios = rs.getString(1);
+                            consulta = "INSERT INTO `dioses` (id, pass) VALUES ('"+id_dios+"', '"+insertPassUser+"')";
+                            System.out.println(rs.getString(1));
+                            stmt = (Statement) bd.createStatement();
+                            rs=stmt.executeQuery(consulta);
+                            System.out.println(consulta);
+                         }
+                     }
+                     
+                     
+                     
+                    if(!rs.first()){
+                        JOptionPane.showMessageDialog(null,"Dios creado correctametne");
+                        insertNombreCuidado.setText("");
+                        descripcionCuidado.setText("");
+                        
+                        crearPassUser.setVisible(false);
+                        crearUser.setVisible(true);
+                    } else{
+                        JOptionPane.showMessageDialog(null,"error inesperado");
+                    }
+                    
+
+                }
+            }else {
+                errorPass.setText("Las contraseñas no coinciden");
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_crearDiosHeroeActionPerformed
 
     private void insertNombreCuidadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertNombreCuidadoActionPerformed
         // TODO add your handling code here:
@@ -1897,6 +2089,7 @@ public class InterDioses extends javax.swing.JFrame {
 
     private void crearEspecialidadNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearEspecialidadNuevaActionPerformed
     //INSERT INTO especialidades (`nombre`, `descripcion`, `id_heroe`) VALUES ('', '', '');
+    
     String idHeroe=  heroeEspecialidad.getSelectedItem().toString().substring(0, heroeEspecialidad.getSelectedItem().toString().indexOf("-"));
         if(!insertNombreEspecialidad.getText().trim().equalsIgnoreCase("") && !descripcionEspecialidad.getText().trim().equalsIgnoreCase("")){
             try {
@@ -1917,9 +2110,46 @@ public class InterDioses extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_crearEspecialidadNuevaActionPerformed
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton13ActionPerformed
+    private void crearTareasNuevaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearTareasNuevaActionPerformed
+        //INSERT INTO tareas (`fecha_creacion`, `fecha_realizacion`, `id_cuidado`, `id_animal`, `id_heroe`, `finalicazo`) VALUES ('', '', '', '', '', '');
+        
+        if(fechaInicioTareas.getDate()!=null && fechaFinalTareas.getDate()!=null){
+            Date aux=null;
+            String fechaInicio,fechaFin;
+            String idCuidado=  cuidadoTareas.getSelectedItem().toString().substring(0, cuidadoTareas.getSelectedItem().toString().indexOf("-"));
+            String idAnimal=  AnimalTareas.getSelectedItem().toString().substring(0, AnimalTareas.getSelectedItem().toString().indexOf("-"));
+            String idHeroe=  heroeTareas.getSelectedItem().toString().substring(0, heroeTareas.getSelectedItem().toString().indexOf("-"));                
+
+            aux = fechaInicioTareas.getDate();
+            fechaInicio=new SimpleDateFormat("yyyy-MM-dd").format(aux);
+            aux = fechaFinalTareas.getDate();
+            fechaFin=new SimpleDateFormat("yyyy-MM-dd").format(aux);
+            
+            try {
+                String consulta = "INSERT INTO tareas (`fecha_creacion`, `fecha_realizacion`, `id_cuidado`, `id_animal`, `id_heroe`, `finalicazo`) VALUES ('"+fechaInicio+"', '"+fechaFin+"', '"+idCuidado+"', '"+idAnimal+"', '"+idHeroe+"', '0')";
+                Statement stmt = (Statement) bd.createStatement();
+                ResultSet rs=stmt.executeQuery(consulta);
+
+                if(!rs.first()){
+                    JOptionPane.showMessageDialog(null,"Tarea creada correctametne");
+                    fechaInicioTareas.setDate(null);
+                    fechaFinalTareas.setDate(null);
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
+        }
+                
+
+                
+                //System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(aux));
+                //System.out.println(aux);
+
+        
+    }//GEN-LAST:event_crearTareasNuevaActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         volver.setVisible(true);
@@ -1982,6 +2212,13 @@ public class InterDioses extends javax.swing.JFrame {
         editNombreAnimal.setText(model.getValueAt(pos, 1).toString());
         editrazaAnimales.setText(model.getValueAt(pos, 2).toString());
         editProcedenciaAnimales.setText(model.getValueAt(pos, 3).toString());
+        
+        try{
+            imagenEditarAnimal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/animales/"+model.getValueAt(pos, 1).toString()+".jpg")));
+        }catch(Exception e){
+            imagenEditarAnimal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sinFoto.jpg")));
+        }
+        
 
     }//GEN-LAST:event_tablaAnimalesMouseClicked
 
@@ -2070,6 +2307,30 @@ public class InterDioses extends javax.swing.JFrame {
 
     private void crearAnimalNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearAnimalNuevoActionPerformed
         if(!insertNombreAnimal.getText().trim().equalsIgnoreCase("") && !razaAnimal.getText().trim().equalsIgnoreCase("") && !procedenciaAnimal.getText().trim().equalsIgnoreCase("")){
+            JFileChooser fc = new JFileChooser();
+            File imagen;
+            File aux, aux2, aux3;
+            int opcion = fc.showOpenDialog(null);
+
+            if(opcion ==JFileChooser.APPROVE_OPTION){
+                imagen = fc.getSelectedFile();
+                System.out.println(imagen.getAbsolutePath());
+                aux = new File("/img/animales/"+ insertNombreAnimal.getText()+".jpg");
+                aux2 = new File(this.getName());
+
+
+                System.out.println("to path: "+aux.toPath());
+                System.out.println(aux2.getAbsolutePath().substring(0,aux2.getAbsolutePath().length()-6)+"src\\img\\animales\\"+insertNombreAnimal.getText()+".jpg");
+                aux3= new File(aux2.getAbsolutePath().substring(0,aux2.getAbsolutePath().length()-6)+"src\\img\\animales\\"+insertNombreAnimal.getText()+".jpg");
+                System.out.println(aux3.toPath());
+                try {
+                    Files.move(imagen.toPath(), aux3.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ex) {
+                    Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
             try {
                 String consulta = "INSERT INTO animales (nombre, raza, procedencia) VALUES ('" + insertNombreAnimal.getText().trim() + "', '" + razaAnimal.getText().trim() + "', '" + procedenciaAnimal.getText().trim() + "')";
                 Statement stmt = (Statement) bd.createStatement();
@@ -2108,6 +2369,40 @@ public class InterDioses extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
         }
     }//GEN-LAST:event_crearCuidadoNuevoActionPerformed
+
+    private void crearNuevoUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearNuevoUserActionPerformed
+
+        //INSERT INTO usuarios (`usuario`, `telefono`, `nombre`) VALUES ('', '', '');
+        if(!insertNombreUsuario.getText().trim().equalsIgnoreCase("") && !numTelNewUser.getText().trim().equalsIgnoreCase("")&& !insertnikNewUser.getText().trim().equalsIgnoreCase("")&&(dios.isSelected()||heroe.isSelected()||visitante.isSelected())){
+            try {
+                if(dios.isSelected() || heroe.isSelected()){
+                    crearUser.setVisible(false);
+                    crearPassUser.setVisible(true);
+                    
+                }else{
+                    String consulta = "INSERT INTO usuarios (`usuario`, `telefono`, `nombre`) VALUES ('insertNombreUsuario.getText().trim()', 'numTelNewUser.getText().trim()', 'insertnikNewUser.getText().trim()')";
+                    Statement stmt = (Statement) bd.createStatement();
+                    ResultSet rs=stmt.executeQuery(consulta);
+
+                    if(!rs.first()){
+                        JOptionPane.showMessageDialog(null,"Cuidado creado correctametne");
+                        insertNombreCuidado.setText("");
+                        descripcionCuidado.setText("");
+                    }
+                }
+
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(InterDioses.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Error datos incompletos o erroneos");
+        }
+    }//GEN-LAST:event_crearNuevoUserActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2166,10 +2461,13 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JPanel crearAnimales;
     private javax.swing.JButton crearCuidadoNuevo;
     private javax.swing.JPanel crearCuidados;
+    private javax.swing.JButton crearDiosHeroe;
     private javax.swing.JPanel crearEspecialidad;
     private javax.swing.JButton crearEspecialidadNueva;
+    private javax.swing.JButton crearNuevoUser;
     private javax.swing.JPanel crearPassUser;
     private javax.swing.JPanel crearTareas;
+    private javax.swing.JButton crearTareasNueva;
     private javax.swing.JPanel crearUser;
     private javax.swing.JComboBox<String> cuidadoTareas;
     private javax.swing.JPanel datosUser;
@@ -2180,7 +2478,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JPanel datosUser5;
     private javax.swing.JTextArea descripcionCuidado;
     private javax.swing.JTextArea descripcionEspecialidad;
-    private javax.swing.JCheckBox dios1;
+    private javax.swing.JCheckBox dios;
     private javax.swing.JTextArea editCuidadoDescripcion;
     private javax.swing.JTextArea editDescripcionEspecialidades;
     private org.jdesktop.swingx.JXDatePicker editFechaFinal;
@@ -2215,6 +2513,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JButton editarUsuariosBoton;
     private javax.swing.JTextField editnombreNick;
     private javax.swing.JTextField editrazaAnimales;
+    private javax.swing.JLabel errorPass;
     private org.jdesktop.swingx.JXDatePicker fechaFinalTareas;
     private org.jdesktop.swingx.JXDatePicker fechaInicioTareas;
     private javax.swing.ButtonGroup finalizado;
@@ -2222,16 +2521,16 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JRadioButton finlizadoSI;
     private javax.swing.JPanel fondo;
     private javax.swing.JLabel fondoImagen;
-    private javax.swing.JCheckBox heroe1;
+    private javax.swing.JCheckBox heroe;
     private javax.swing.JComboBox<String> heroeEspecialidad;
     private javax.swing.JComboBox<String> heroeTareas;
-    private javax.swing.JTextField insertNombre1;
+    private javax.swing.JLabel imagenEditarAnimal;
     private javax.swing.JTextField insertNombreAnimal;
     private javax.swing.JTextField insertNombreCuidado;
     private javax.swing.JTextField insertNombreEspecialidad;
+    private javax.swing.JTextField insertNombreUsuario;
     private javax.swing.JTextField insertPassUser;
-    private javax.swing.JTextField insertnik1;
-    private javax.swing.JButton jButton13;
+    private javax.swing.JTextField insertnikNewUser;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
@@ -2250,12 +2549,11 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
-    private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton34;
     private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton36;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -2275,7 +2573,6 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JLabel nikname;
     private javax.swing.JLabel nikname1;
     private javax.swing.JLabel nikname2;
     private javax.swing.JLabel nikname3;
@@ -2285,7 +2582,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel nombre3;
     private javax.swing.JLabel nombre4;
     private javax.swing.JLabel nombre5;
-    private javax.swing.JTextField numTel1;
+    private javax.swing.JTextField numTelNewUser;
     private javax.swing.JTextField procedenciaAnimal;
     private javax.swing.JButton quitarPrivilegiosDioses;
     private javax.swing.JButton quitarPrivilegiosDioses1;
@@ -2302,6 +2599,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel telefono2;
     private javax.swing.JLabel telefono3;
     private javax.swing.JLabel telefono4;
+    private javax.swing.ButtonGroup tipoUsuario;
     private javax.swing.JLabel titulo;
     private javax.swing.JLabel tituloCrearUser;
     private javax.swing.JLabel tituloCrearUser1;
@@ -2341,7 +2639,7 @@ public class InterDioses extends javax.swing.JFrame {
     private javax.swing.JLabel tituloCrearUser7;
     private javax.swing.JLabel tituloCrearUser8;
     private javax.swing.JLabel tituloCrearUser9;
-    private javax.swing.JCheckBox visitante1;
+    private javax.swing.JCheckBox visitante;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }

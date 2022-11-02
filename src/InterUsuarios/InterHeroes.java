@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -175,6 +176,7 @@ public class InterHeroes extends javax.swing.JFrame {
         jPanel1.setOpaque(false);
 
         titulo.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         panelTabla.setBackground(new java.awt.Color(255, 255, 255));
         panelTabla.setOpaque(false);
@@ -226,7 +228,7 @@ public class InterHeroes extends javax.swing.JFrame {
         jLabel1.setText("Detalles de la tarea");
         panelInformacio.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 650, -1));
 
-        imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/animales/dragones/Tianlong.jpg"))); // NOI18N
+        imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sinFoto.jpg"))); // NOI18N
         panelInformacio.add(imagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
 
         nombreAnimal.setFont(new java.awt.Font("SPACE EXPLORER", 0, 14)); // NOI18N
@@ -311,38 +313,6 @@ public class InterHeroes extends javax.swing.JFrame {
         seleccion.setVisible(true);
     }//GEN-LAST:event_cerrarSesionMouseClicked
 
-    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        pos = -5;
-        DefaultTableModel model = (DefaultTableModel)tabla.getModel();
-        pos = tabla.getSelectedRow();
-        this.panelTabla.setVisible(false);
-
-        this.panelInformacio.setVisible(true);
-        this.atras.setVisible(true);
-        imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/animales/dragones/" + model.getValueAt(pos, 4)+".jpg")));
-        nombreAnimal.setText(model.getValueAt(pos, 4).toString());
-        try {
-            String consulta = "SELECT animales.nombre, cuidado.nombre, cuidado.descripcion, tareas.fecha_realizacion, tareas.finalicazo FROM animales, cuidado, tareas where tareas.id="+model.getValueAt(pos, 0)+" AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal";
-            //System.out.println(consulta);
-            Statement stmt = (Statement) bd.createStatement();
-            ResultSet rs=stmt.executeQuery(consulta);
-            rs.next();
-            
-            descripcionAnimal.setText(rs.getString(3));
-            nombreCuidado.setText(rs.getString(2));
-            finFecha.setText(rs.getString(4));
-            if (Integer.parseInt(rs.getString(5)) == 0){
-                termiando.setSelected(false); 
-            }else{
-                termiando.setSelected(true); 
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_tablaMouseClicked
-
     private void atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atrasActionPerformed
         DefaultTableModel model = (DefaultTableModel)tabla.getModel();
         this.panelInformacio.setVisible(false);
@@ -357,6 +327,7 @@ public class InterHeroes extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
             }
+            termiando.setSelected(false);
         }
              System.out.println("num filas " + model.getRowCount());
              int aux = model.getRowCount();
@@ -368,6 +339,41 @@ public class InterHeroes extends javax.swing.JFrame {
 
         this.panelTabla.setVisible(true);
     }//GEN-LAST:event_atrasActionPerformed
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        pos = -5;
+        DefaultTableModel model = (DefaultTableModel)tabla.getModel();
+        pos = tabla.getSelectedRow();
+        this.panelTabla.setVisible(false);
+
+        this.panelInformacio.setVisible(true);
+        this.atras.setVisible(true);
+        try{
+            imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/animales/" + model.getValueAt(pos, 4)+".jpg")));
+        }catch(Exception e){
+            imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sinFoto.jpg")));
+        }
+        nombreAnimal.setText(model.getValueAt(pos, 4).toString());
+        try {
+            String consulta = "SELECT animales.nombre, cuidado.nombre, cuidado.descripcion, tareas.fecha_realizacion, tareas.finalicazo FROM animales, cuidado, tareas where tareas.id="+model.getValueAt(pos, 0)+" AND cuidado.id = tareas.id_cuidado AND animales.id = tareas.id_animal";
+            //System.out.println(consulta);
+            Statement stmt = (Statement) bd.createStatement();
+            ResultSet rs=stmt.executeQuery(consulta);
+            rs.next();
+
+            descripcionAnimal.setText(rs.getString(3));
+            nombreCuidado.setText(rs.getString(2));
+            finFecha.setText(rs.getString(4));
+            if (Integer.parseInt(rs.getString(5)) == 0){
+                termiando.setSelected(false);
+            }else{
+                termiando.setSelected(true);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(InterHeroes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_tablaMouseClicked
 
     /**
      * @param args the command line arguments
